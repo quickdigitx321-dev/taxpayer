@@ -13,6 +13,8 @@ dist
 /*.jpg
 server/uploads/*
 !server/uploads/.gitkeep
+public/uploads/*
+!public/uploads/.gitkeep
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
