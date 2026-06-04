@@ -4,7 +4,11 @@ const {
   publicFormAntiSpam,
   publicFormRateLimit
 } = require("../middleware/antiSpam");
-const { sendMail } = require("../services/email");
+const {
+  sendMembershipNotifications,
+  sendComplaintNotifications,
+  sendContactNotifications
+} = require("../services/notifications");
 const { getSettings } = require("../services/settings");
 const { asyncHandler } = require("../utils/asyncHandler");
 const {
@@ -76,17 +80,7 @@ router.post(
       ]
     );
 
-    await sendMail({
-      to: process.env.ADMIN_NOTIFICATION_EMAIL,
-      subject: "New TPAP membership application",
-      text: `New membership application received from ${data.firstName} ${data.lastName} (${data.email}).`
-    });
-
-    await sendMail({
-      to: data.email,
-      subject: "TPAP membership application received",
-      text: "Thank you. Your TPAP membership application has been received and is pending review."
-    });
+    await sendMembershipNotifications(data, result.insertId);
 
     res.status(201).json({
       message: "Membership application submitted successfully.",
@@ -108,11 +102,7 @@ router.post(
       [data.fullName, data.email, data.phone, data.subject, data.message]
     );
 
-    await sendMail({
-      to: process.env.ADMIN_NOTIFICATION_EMAIL,
-      subject: "New TPAP complaint or suggestion",
-      text: `New submission received from ${data.fullName}: ${data.subject}`
-    });
+    await sendComplaintNotifications(data, result.insertId);
 
     res.status(201).json({
       message: "Complaint or suggestion submitted successfully.",
@@ -134,11 +124,7 @@ router.post(
       [data.name, data.email, data.phone, data.message]
     );
 
-    await sendMail({
-      to: process.env.ADMIN_NOTIFICATION_EMAIL,
-      subject: "New TPAP contact inquiry",
-      text: `New contact inquiry received from ${data.name} (${data.email}).`
-    });
+    await sendContactNotifications(data, result.insertId);
 
     res.status(201).json({
       message: "Contact inquiry submitted successfully.",

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BadgeCheck,
+  Bell,
   Bold,
   ClipboardList,
   FileText,
@@ -19,7 +20,8 @@ import {
   Quote,
   RefreshCcw,
   Search,
-  UsersRound
+  UsersRound,
+  X
 } from "lucide-react";
 import {
   BlogPayload,
@@ -61,6 +63,11 @@ type AdminTab =
   | "blogs"
   | "leadership"
   | "settings";
+
+type LoadDataOptions = {
+  silent?: boolean;
+  checkForNew?: boolean;
+};
 
 const emptyBlogForm: BlogPayload = {
   title: "",
@@ -148,8 +155,10 @@ export function AdminDashboard() {
   const [settingsForm, setSettingsForm] = useState<WebsiteSettings>(emptySettings);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [dashboardAlert, setDashboardAlert] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [actionId, setActionId] = useState("");
+  const latestStatsRef = useRef<DashboardStats | null>(null);
 
   const statCards = useMemo(
     () => [
@@ -187,12 +196,14 @@ export function AdminDashboard() {
     [stats]
   );
 
-  async function loadData(authToken = token) {
+  async function loadData(authToken = token, options: LoadDataOptions = {}) {
     if (!authToken) {
       return;
     }
 
-    setIsLoading(true);
+    if (!options.silent) {
+      setIsLoading(true);
+    }
     setError("");
 
     try {
@@ -215,7 +226,29 @@ export function AdminDashboard() {
           getWebsiteSettings(authToken)
         ]);
 
-      setStats(dashboardData.stats);
+      const previousStats = latestStatsRef.current;
+      const nextStats = dashboardData.stats;
+
+      if (options.checkForNew && previousStats) {
+        const alerts = [
+          nextStats.membershipApplications > previousStats.membershipApplications
+            ? "New membership application received."
+            : "",
+          nextStats.complaints > previousStats.complaints
+            ? "New complaint or suggestion received."
+            : "",
+          nextStats.contactInquiries > previousStats.contactInquiries
+            ? "New contact inquiry received."
+            : ""
+        ].filter(Boolean);
+
+        if (alerts.length > 0) {
+          setDashboardAlert(alerts.join(" "));
+        }
+      }
+
+      latestStatsRef.current = nextStats;
+      setStats(nextStats);
       setMemberships(membershipData.records);
       setComplaints(complaintData.records);
       setContacts(contactData.records);
@@ -223,9 +256,13 @@ export function AdminDashboard() {
       setLeadership(leadershipData.records);
       setSettingsForm(settingsData.settings);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load admin data.");
+      if (!options.silent) {
+        setError(err instanceof Error ? err.message : "Could not load admin data.");
+      }
     } finally {
-      setIsLoading(false);
+      if (!options.silent) {
+        setIsLoading(false);
+      }
     }
   }
 
@@ -241,6 +278,12 @@ export function AdminDashboard() {
     setToken(savedToken);
     setAdminName(savedName || "Admin");
     loadData(savedToken);
+
+    const intervalId = window.setInterval(() => {
+      loadData(savedToken, { silent: true, checkForNew: true });
+    }, 45000);
+
+    return () => window.clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -395,6 +438,27 @@ export function AdminDashboard() {
         </header>
 
         <div className="p-5 lg:p-8">
+          {dashboardAlert ? (
+            <div className="fixed right-5 top-5 z-50 max-w-sm border border-forest-200 bg-white p-4 shadow-premium">
+              <div className="flex items-start gap-3">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-forest-50 text-forest-800">
+                  <Bell size={18} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-charcoal-950">New dashboard activity</p>
+                  <p className="mt-1 text-sm leading-6 text-charcoal-600">{dashboardAlert}</p>
+                </div>
+                <button
+                  aria-label="Dismiss notification"
+                  className="text-charcoal-400 hover:text-charcoal-800"
+                  onClick={() => setDashboardAlert("")}
+                >
+                  <X size={17} />
+                </button>
+              </div>
+            </div>
+          ) : null}
+
           {error ? (
             <div className="mb-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}

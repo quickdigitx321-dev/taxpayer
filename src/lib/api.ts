@@ -26,6 +26,7 @@ export type ApiResult = {
   ok: boolean;
   message: string;
   id?: number;
+  errors?: Record<string, string[]>;
 };
 
 function formatValidationErrors(errors: unknown) {
@@ -65,7 +66,8 @@ export async function postPublicForm(
       ok: false,
       message:
         `${data.message || "The form could not be submitted."}${details}` ||
-        "The form could not be submitted. Please check the fields and try again."
+        "The form could not be submitted. Please check the fields and try again.",
+      errors: data.errors
     };
   }
 

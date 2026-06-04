@@ -6,7 +6,11 @@ import { z, ZodError } from "zod";
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { pool } = require("../../../../server/config/db");
-const { sendMail } = require("../../../../server/services/email");
+const {
+  sendMembershipNotifications,
+  sendComplaintNotifications,
+  sendContactNotifications
+} = require("../../../../server/services/notifications");
 const {
   defaultSettings,
   getSettings,
@@ -355,17 +359,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
         ]
       );
 
-      await sendMail({
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
-        subject: "New TPAP membership application",
-        text: `New membership application received from ${data.firstName} ${data.lastName} (${data.email}).`
-      });
-
-      await sendMail({
-        to: data.email,
-        subject: "TPAP membership application received",
-        text: "Thank you. Your TPAP membership application has been received and is pending review."
-      });
+      await sendMembershipNotifications(data, result.insertId);
 
       return json(
         {
@@ -384,11 +378,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
         [data.fullName, data.email, data.phone, data.subject, data.message]
       );
 
-      await sendMail({
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
-        subject: "New TPAP complaint or suggestion",
-        text: `New submission received from ${data.fullName}: ${data.subject}`
-      });
+      await sendComplaintNotifications(data, result.insertId);
 
       return json(
         {
@@ -407,11 +397,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
         [data.name, data.email, data.phone, data.message]
       );
 
-      await sendMail({
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
-        subject: "New TPAP contact inquiry",
-        text: `New contact inquiry received from ${data.name} (${data.email}).`
-      });
+      await sendContactNotifications(data, result.insertId);
 
       return json(
         {

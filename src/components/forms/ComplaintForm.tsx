@@ -11,10 +11,13 @@ const initialValues = {
   subject: "",
   message: ""
 };
+const phoneRegex = /^[+0-9\s()-]{7,30}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ComplaintForm() {
   const formStartedAt = useRef(Date.now());
   const [values, setValues] = useState(initialValues);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{
     type: "success" | "error";
@@ -28,8 +31,37 @@ export function ComplaintForm() {
       website: String(formData.get("website") || ""),
       formStartedAt: String(formData.get("formStartedAt") || "")
     };
-    setIsSubmitting(true);
     setStatus(null);
+
+    const nextErrors: Record<string, string> = {};
+
+    if (values.fullName.trim().length < 2) {
+      nextErrors.fullName = "Full name must be at least 2 characters.";
+    }
+    if (!emailRegex.test(values.email.trim())) {
+      nextErrors.email = "Enter a valid email address.";
+    }
+    if (!phoneRegex.test(values.phone.trim())) {
+      nextErrors.phone = "Enter a valid phone number.";
+    }
+    if (values.subject.trim().length < 3) {
+      nextErrors.subject = "Subject must be at least 3 characters.";
+    }
+    if (values.message.trim().length < 10) {
+      nextErrors.message = "Message must be at least 10 characters.";
+    }
+
+    setFieldErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      setStatus({
+        type: "error",
+        message: "Please correct the highlighted fields before submitting."
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       const result = await postPublicForm("/complaints", {
@@ -46,6 +78,16 @@ export function ComplaintForm() {
 
       if (result.ok) {
         setValues(initialValues);
+        setFieldErrors({});
+      } else if (result.errors) {
+        setFieldErrors(
+          Object.fromEntries(
+            Object.entries(result.errors).map(([field, errors]) => [
+              field,
+              errors[0] || "Please check this field."
+            ])
+          )
+        );
       }
     } catch {
       setStatus({
@@ -59,10 +101,15 @@ export function ComplaintForm() {
 
   function updateField(name: keyof typeof initialValues, value: string) {
     setValues((current) => ({ ...current, [name]: value }));
+    setFieldErrors((current) => ({ ...current, [name]: "" }));
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 bg-white p-6 shadow-soft md:grid-cols-2">
+    <form
+      noValidate
+      onSubmit={handleSubmit}
+      className="grid gap-5 bg-white p-6 shadow-soft md:grid-cols-2"
+    >
       <input
         aria-hidden="true"
         autoComplete="off"
@@ -77,52 +124,84 @@ export function ComplaintForm() {
       <label className="grid gap-2 text-sm font-semibold">
         Full Name
         <input
-          className="border border-charcoal-100 px-4 py-3 outline-none focus:border-forest-700"
+          aria-invalid={Boolean(fieldErrors.fullName)}
+          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
+            fieldErrors.fullName ? "border-red-300 bg-red-50" : "border-charcoal-100"
+          }`}
           onChange={(event) => updateField("fullName", event.target.value)}
           required
           value={values.fullName}
         />
+        {fieldErrors.fullName ? (
+          <span className="text-xs font-semibold text-red-700">
+            {fieldErrors.fullName}
+          </span>
+        ) : null}
       </label>
       <label className="grid gap-2 text-sm font-semibold">
         Email
         <input
           autoComplete="email"
-          className="border border-charcoal-100 px-4 py-3 outline-none focus:border-forest-700"
+          aria-invalid={Boolean(fieldErrors.email)}
+          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
+            fieldErrors.email ? "border-red-300 bg-red-50" : "border-charcoal-100"
+          }`}
           onChange={(event) => updateField("email", event.target.value)}
           placeholder="name@example.com"
           required
           type="email"
           value={values.email}
         />
+        {fieldErrors.email ? (
+          <span className="text-xs font-semibold text-red-700">{fieldErrors.email}</span>
+        ) : null}
       </label>
       <label className="grid gap-2 text-sm font-semibold">
         Phone Number
         <input
           autoComplete="tel"
-          className="border border-charcoal-100 px-4 py-3 outline-none focus:border-forest-700"
+          aria-invalid={Boolean(fieldErrors.phone)}
+          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
+            fieldErrors.phone ? "border-red-300 bg-red-50" : "border-charcoal-100"
+          }`}
           onChange={(event) => updateField("phone", event.target.value)}
           placeholder="03001234567"
           required
           value={values.phone}
         />
+        {fieldErrors.phone ? (
+          <span className="text-xs font-semibold text-red-700">{fieldErrors.phone}</span>
+        ) : null}
       </label>
       <label className="grid gap-2 text-sm font-semibold">
         Subject
         <input
-          className="border border-charcoal-100 px-4 py-3 outline-none focus:border-forest-700"
+          aria-invalid={Boolean(fieldErrors.subject)}
+          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
+            fieldErrors.subject ? "border-red-300 bg-red-50" : "border-charcoal-100"
+          }`}
           onChange={(event) => updateField("subject", event.target.value)}
           required
           value={values.subject}
         />
+        {fieldErrors.subject ? (
+          <span className="text-xs font-semibold text-red-700">{fieldErrors.subject}</span>
+        ) : null}
       </label>
       <label className="grid gap-2 text-sm font-semibold md:col-span-2">
         Complaint / Suggestion Message
         <textarea
-          className="min-h-40 border border-charcoal-100 px-4 py-3 outline-none focus:border-forest-700"
+          aria-invalid={Boolean(fieldErrors.message)}
+          className={`min-h-40 border px-4 py-3 outline-none focus:border-forest-700 ${
+            fieldErrors.message ? "border-red-300 bg-red-50" : "border-charcoal-100"
+          }`}
           onChange={(event) => updateField("message", event.target.value)}
           required
           value={values.message}
         />
+        {fieldErrors.message ? (
+          <span className="text-xs font-semibold text-red-700">{fieldErrors.message}</span>
+        ) : null}
       </label>
       <button
         className="rounded-full bg-forest-800 px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 md:col-span-2"

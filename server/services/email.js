@@ -9,7 +9,7 @@ function hasSmtpConfig() {
   );
 }
 
-async function sendMail({ to, subject, text }) {
+async function sendMail({ to, subject, text, html }) {
   if (!hasSmtpConfig()) {
     console.log(`[email skipped] ${subject} -> ${to}`);
     return;
@@ -33,7 +33,8 @@ async function sendMail({ to, subject, text }) {
       from: process.env.SMTP_FROM,
       to,
       subject,
-      text
+      text,
+      html
     });
   } catch (error) {
     console.error(`[email failed] ${subject} -> ${to}`, error);

@@ -16,10 +16,31 @@ const fields = [
 ];
 
 const initialValues = Object.fromEntries(fields.map((field) => [field.name, ""]));
+const phoneRegex = /^[+0-9\s()-]{7,30}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ntnRegex = /^[A-Za-z0-9-]{5,30}$/;
+
+function formatCnic(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 13);
+  const first = digits.slice(0, 5);
+  const second = digits.slice(5, 12);
+  const third = digits.slice(12, 13);
+
+  if (digits.length > 12) {
+    return `${first}-${second}-${third}`;
+  }
+
+  if (digits.length > 5) {
+    return `${first}-${second}`;
+  }
+
+  return first;
+}
 
 export function MembershipForm() {
   const formStartedAt = useRef(Date.now());
   const [values, setValues] = useState<Record<string, string>>(initialValues);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{
     type: "success" | "error";
@@ -33,8 +54,46 @@ export function MembershipForm() {
       website: String(formData.get("website") || ""),
       formStartedAt: String(formData.get("formStartedAt") || "")
     };
-    setIsSubmitting(true);
     setStatus(null);
+
+    const nextErrors: Record<string, string> = {};
+
+    if (values.firstName.trim().length < 2) {
+      nextErrors.firstName = "First name must be at least 2 characters.";
+    }
+    if (values.lastName.trim().length < 2) {
+      nextErrors.lastName = "Last name must be at least 2 characters.";
+    }
+    if (values.cnic.replace(/\D/g, "").length !== 13) {
+      nextErrors.cnic = "CNIC must be 13 digits in this format: 12345-1234567-1.";
+    }
+    if (!ntnRegex.test(values.ntn.trim())) {
+      nextErrors.ntn = "NTN must be 5 to 30 letters, numbers, or dashes.";
+    }
+    if (values.organizationName.trim().length < 2) {
+      nextErrors.organizationName = "Organization name must be at least 2 characters.";
+    }
+    if (!phoneRegex.test(values.phone.trim())) {
+      nextErrors.phone = "Enter a valid phone number.";
+    }
+    if (!emailRegex.test(values.email.trim())) {
+      nextErrors.email = "Enter a valid email address.";
+    }
+    if (values.officeAddress.trim().length < 10) {
+      nextErrors.officeAddress = "Office address must be at least 10 characters.";
+    }
+
+    setFieldErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      setStatus({
+        type: "error",
+        message: "Please correct the highlighted fields before submitting."
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       const result = await postPublicForm("/membership-applications", {
@@ -51,6 +110,16 @@ export function MembershipForm() {
 
       if (result.ok) {
         setValues(initialValues);
+        setFieldErrors({});
+      } else if (result.errors) {
+        setFieldErrors(
+          Object.fromEntries(
+            Object.entries(result.errors).map(([field, errors]) => [
+              field,
+              errors[0] || "Please check this field."
+            ])
+          )
+        );
       }
     } catch {
       setStatus({
@@ -63,7 +132,11 @@ export function MembershipForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 bg-white p-6 shadow-soft md:grid-cols-2">
+    <form
+      noValidate
+      onSubmit={handleSubmit}
+      className="grid gap-5 bg-white p-6 shadow-soft md:grid-cols-2"
+    >
       <input
         aria-hidden="true"
         autoComplete="off"
@@ -85,18 +158,40 @@ export function MembershipForm() {
           {field.label}
           <input
             autoComplete={field.autoComplete}
-            className="border border-charcoal-100 px-4 py-3 outline-none focus:border-forest-700"
+            aria-invalid={Boolean(fieldErrors[field.name])}
+            className={`border px-4 py-3 outline-none focus:border-forest-700 ${
+              fieldErrors[field.name] ? "border-red-300 bg-red-50" : "border-charcoal-100"
+            }`}
             name={field.name}
-            onChange={(event) =>
+            onChange={(event) => {
+              const value =
+                field.name === "cnic"
+                  ? formatCnic(event.target.value)
+                  : event.target.value;
+
               setValues((current) => ({
                 ...current,
-                [field.name]: event.target.value
-              }))
-            }
+                [field.name]: value
+              }));
+              setFieldErrors((current) => ({ ...current, [field.name]: "" }));
+            }}
             placeholder={field.placeholder}
             required
+            inputMode={field.name === "cnic" ? "numeric" : undefined}
+            maxLength={field.name === "cnic" ? 15 : undefined}
+            pattern={field.name === "cnic" ? "\\d{5}-\\d{7}-\\d{1}" : undefined}
+            title={
+              field.name === "cnic"
+                ? "Enter CNIC in this format: 12345-1234567-1"
+                : undefined
+            }
             value={values[field.name]}
           />
+          {fieldErrors[field.name] ? (
+            <span className="text-xs font-semibold text-red-700">
+              {fieldErrors[field.name]}
+            </span>
+          ) : null}
         </label>
       ))}
       <button
