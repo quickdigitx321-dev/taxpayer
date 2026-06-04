@@ -1,5 +1,26 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+export const API_BASE_URL = "/api";
+
+const DEFAULT_TIMEOUT_MS = 12000;
+
+export async function apiFetch(
+  path: string,
+  options: RequestInit & { timeoutMs?: number } = {}
+) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(
+    () => controller.abort(),
+    options.timeoutMs || DEFAULT_TIMEOUT_MS
+  );
+
+  try {
+    return await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      signal: controller.signal
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
 
 export type ApiResult = {
   ok: boolean;
@@ -27,7 +48,7 @@ export async function postPublicForm(
   endpoint: string,
   payload: Record<string, string>
 ): Promise<ApiResult> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await apiFetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

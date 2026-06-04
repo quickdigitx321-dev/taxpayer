@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./api";
+import { apiFetch } from "./api";
 
 export type AdminLoginResponse = {
   message: string;
@@ -127,7 +127,7 @@ async function request<T>(
   path: string,
   options: RequestInit & { token?: string } = {}
 ): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await apiFetch(path, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -293,7 +293,7 @@ export async function uploadBlogImage(token: string, file: File) {
   const body = new FormData();
   body.append("image", file);
 
-  const response = await fetch(`${API_BASE_URL}/admin/uploads/image`, {
+  const response = await apiFetch("/admin/uploads/image", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`

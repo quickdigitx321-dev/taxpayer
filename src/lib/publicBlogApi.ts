@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./api";
+import { apiFetch } from "./api";
 
 export type PublicBlog = {
   id: number;
@@ -16,7 +16,7 @@ export type PublicBlog = {
 };
 
 export async function getPublishedBlogs() {
-  const response = await fetch(`${API_BASE_URL}/blogs`);
+  const response = await apiFetch("/blogs");
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
@@ -27,7 +27,7 @@ export async function getPublishedBlogs() {
 }
 
 export async function getPublishedBlog(slug: string) {
-  const response = await fetch(`${API_BASE_URL}/blogs/${slug}`);
+  const response = await apiFetch(`/blogs/${slug}`);
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {

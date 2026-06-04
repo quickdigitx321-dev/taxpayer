@@ -1,11 +1,11 @@
-import { API_BASE_URL } from "./api";
+import { apiFetch } from "./api";
 import { WebsiteSettings } from "./adminApi";
 
 export const fallbackSettings: WebsiteSettings = {
   siteTitle: "Tax Payer Alliance Pakistan",
   logoUrl: "",
   faviconUrl: "",
-  contactEmail: "basitdev.bk@gmail.com",
+  contactEmail: "admin@taxpayeralliancepakistan.com",
   phone: "",
   address: "",
   facebook: "",
@@ -22,7 +22,7 @@ export const fallbackSettings: WebsiteSettings = {
 };
 
 export async function getPublicSettings() {
-  const response = await fetch(`${API_BASE_URL}/settings`);
+  const response = await apiFetch("/settings");
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {

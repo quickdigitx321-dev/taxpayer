@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./api";
+import { apiFetch } from "./api";
 
 export type PublicLeadershipProfile = {
   id: number;
@@ -12,7 +12,7 @@ export type PublicLeadershipProfile = {
 };
 
 export async function getPublicLeadershipProfiles() {
-  const response = await fetch(`${API_BASE_URL}/leadership-profiles`);
+  const response = await apiFetch("/leadership-profiles");
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
