@@ -134,6 +134,38 @@ function downloadCsv(filename: string, rows: Record<string, unknown>[]) {
   URL.revokeObjectURL(url);
 }
 
+function playNotificationTone() {
+  try {
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+
+    if (!AudioContextClass) {
+      return;
+    }
+
+    const audioContext = new AudioContextClass();
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(660, audioContext.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.18, audioContext.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.35);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.36);
+    window.setTimeout(() => audioContext.close(), 500);
+  } catch {
+    // Browsers can block audio until the page has user interaction.
+  }
+}
+
 export function AdminDashboard() {
   const router = useRouter();
   const [token, setToken] = useState("");
@@ -244,6 +276,7 @@ export function AdminDashboard() {
 
         if (alerts.length > 0) {
           setDashboardAlert(alerts.join(" "));
+          playNotificationTone();
         }
       }
 
