@@ -7,8 +7,8 @@ import { loginAdmin } from "@/lib/adminApi";
 
 export function AdminLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("basitdev.bk@gmail.com");
-  const [password, setPassword] = useState("admin12345");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -55,6 +55,7 @@ export function AdminLogin() {
                 <input
                   className="w-full bg-transparent outline-none"
                   onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="username"
                   required
                   type="email"
                   value={email}
@@ -69,6 +70,7 @@ export function AdminLogin() {
                 <input
                   className="w-full bg-transparent outline-none"
                   onChange={(event) => setPassword(event.target.value)}
+                  autoComplete="current-password"
                   required
                   type="password"
                   value={password}
