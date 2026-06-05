@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Policy Advocacy | TPAP | Influencing Pakistan's Tax & Fiscal Policy",
   description:
     "TPAP engages government, parliament, and FBR to advance evidence-based tax reform. Read about our research, submissions, and stakeholder engagement.",
-  keywords: ["tax policy advocacy Pakistan", "FBR reform", "Pakistan budget recommendations", "taxpayer representation"]
+  keywords: ["tax policy advocacy Pakistan", "FBR reform", "Pakistan budget recommendations", "taxpayer representation", "fiscal policy Pakistan"]
 };
 
 const engagementPartners = [
@@ -111,6 +111,9 @@ export default function PolicyAdvocacyPage() {
             <h2 className="mt-4 max-w-3xl font-display text-4xl md:text-5xl">
               Help shape a fairer, simpler, and more accountable tax system.
             </h2>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-white/68">
+              Review our latest <Link className="font-bold text-gold-200" href="/blogs">tax policy articles</Link> and strengthen this work through <Link className="font-bold text-gold-200" href="/membership">TPAP membership</Link>.
+            </p>
           </div>
           <Link
             href="/membership"

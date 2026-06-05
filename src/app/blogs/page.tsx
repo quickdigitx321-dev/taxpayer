@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "TPAP Blog | Tax Reform, Fiscal Policy & Economic Analysis for Pakistan",
   description:
     "Pakistan's most focused publication on tax policy, public finance, and economic reform. Expert analysis for taxpayers, business owners, and policymakers.",
-  keywords: ["Pakistan tax policy blog", "tax reform analysis Pakistan", "FBR reforms", "government accountability Pakistan"]
+  keywords: ["Pakistan tax policy blog", "tax reform analysis Pakistan", "FBR reform", "taxpayer rights", "fiscal transparency"]
 };
 
 export default function BlogsPage() {

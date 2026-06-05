@@ -183,7 +183,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Taxpayer Voices"
             title="Why people choose to stand with TPAP."
-            description="These client-supplied testimonial placeholders will be replaced with verified member names and organisations when approved."
+            description="Perspectives from taxpayers who support fairer policy, simpler compliance, and accountable public spending."
             align="center"
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">

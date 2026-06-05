@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -185,6 +186,9 @@ export default function AboutPage() {
               </article>
             ))}
           </div>
+          <p className="mt-12 text-center text-sm leading-7 text-white/70">
+            Ready to take part? <Link className="font-bold text-gold-200" href="/membership">Become a member</Link>, learn about our <Link className="font-bold text-gold-200" href="/policy-advocacy">policy advocacy</Link>, or <Link className="font-bold text-gold-200" href="/complaints">submit a complaint</Link>.
+          </p>
         </div>
       </section>
     </PageShell>

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Press Releases & Media",
   description:
     "Official TPAP press releases, taxpayer policy statements, seminar speakers, and media videos.",
+  keywords: ["TPAP press releases", "tax reform Pakistan", "taxpayer rights", "FBR policy", "fiscal policy Pakistan"],
   alternates: {
     canonical: "/press-releases"
   },
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     description:
       "Official statements, policy positions, expert seminars, and media appearances from Tax Payers Alliance Pakistan.",
     url: "/press-releases",
-    images: ["/press/section-7e-panel.jpeg"]
+    images: ["/brand/tpap-social-share.jpg"]
   }
 };
 

@@ -1,55 +1,45 @@
+import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 import { PublicLeadershipProfiles } from "@/components/PublicLeadershipProfiles";
 import { SectionHeading } from "@/components/SectionHeading";
 
-export default function LeadershipPage() {
-  const groups = [
-    {
-      title: "Board of Advisors",
-      description:
-        "TPAP's Board of Advisors comprises senior economists, former policymakers, leading business figures, and respected academics who provide strategic guidance and lend institutional credibility to TPAP's work. The Board meets quarterly to review TPAP's policy positions, research agenda, and advocacy strategy.",
-      roles: [
-        "[Advisor Name] — Former Secretary, Ministry of Finance | 30+ years public finance experience | Former IMF consultant | Author of landmark fiscal reform proposals",
-        "[Advisor Name] — Founder, [Leading Business Group] | Former FPCCI President | Advocate for business-friendly taxation | Active voice in FBR reform dialogue",
-        "[Advisor Name] — Professor of Economics, [University] | Published researcher in taxation and public finance | Advisor to Senate Standing Committee on Finance"
-      ]
-    },
-    {
-      title: "Executive Leadership",
-      description:
-        "TPAP's Executive Leadership is responsible for day-to-day operations, stakeholder engagement, research output, and advocacy campaigns of the Alliance.",
-      roles: [
-        "[Executive Director] — A seasoned economist and policy advocate with extensive experience in think tank leadership, fiscal policy research, and stakeholder engagement. Holds advanced degrees in economics and public policy.",
-        "[Director, Policy & Research] — A specialist in taxation law and fiscal policy with a background in FBR, academic research, and private sector consulting. Leads TPAP's policy submissions, budget analyses, and legislative recommendations.",
-        "[Director, Membership & Outreach] — Responsible for TPAP's membership growth, community engagement, and regional chapter development. Background in advocacy communications and civil society leadership."
-      ]
-    },
-    {
-      title: "Policy & Research Committee",
-      description:
-        "The Policy & Research Committee is TPAP's intellectual engine, a standing group of economists, tax lawyers, chartered accountants, and policy analysts who develop TPAP's research positions, policy papers, and advocacy briefs.",
-      roles: [
-        "[Placeholder] Senior Research Fellow — Taxation Policy",
-        "[Placeholder] Research Fellow — Public Finance & Expenditure",
-        "[Placeholder] Legal Advisor — Tax Law & Taxpayer Rights",
-        "[Placeholder] Industry Specialist — SME Taxation",
-        "[Placeholder] Data Analyst — Fiscal Statistics & Modelling"
-      ]
-    },
-    {
-      title: "Regional Chapters Leadership",
-      description:
-        "TPAP maintains regional chapters to ensure taxpayer representation at the provincial and city level. Chapter heads coordinate local advocacy, member engagement, and media outreach in alignment with TPAP's national agenda.",
-      roles: [
-        "[Placeholder] Punjab Chapter Head — Lahore",
-        "[Placeholder] Sindh Chapter Head — Karachi",
-        "[Placeholder] KPK Chapter Head — Peshawar",
-        "[Placeholder] Balochistan Chapter Head — Quetta",
-        "[Placeholder] Federal Chapter Head — Islamabad / Rawalpindi"
-      ]
-    }
-  ];
+export const metadata: Metadata = {
+  title: "TPAP Leadership",
+  description:
+    "Meet the policy professionals, economists, business leaders, and advocates guiding Tax Payers Alliance Pakistan.",
+  keywords: [
+    "TPAP leadership",
+    "tax policy experts Pakistan",
+    "taxpayer advocates",
+    "fiscal policy Pakistan",
+    "TPAP board"
+  ]
+};
 
+const leadershipGroups = [
+  {
+    title: "Board of Advisors",
+    description:
+      "Senior economists, former policymakers, business figures, and respected academics provide strategic guidance and institutional credibility to TPAP's work."
+  },
+  {
+    title: "Executive Leadership",
+    description:
+      "TPAP's executive leadership is responsible for day-to-day operations, stakeholder engagement, research output, and advocacy campaigns."
+  },
+  {
+    title: "Policy & Research Committee",
+    description:
+      "Economists, tax lawyers, chartered accountants, and policy analysts develop TPAP's research positions, policy papers, and advocacy briefs."
+  },
+  {
+    title: "Regional Chapters",
+    description:
+      "Regional chapters support taxpayer representation, member engagement, and public outreach at provincial and city level."
+  }
+];
+
+export default function LeadershipPage() {
   return (
     <PageShell
       eyebrow="Leadership"
@@ -68,20 +58,11 @@ export default function LeadershipPage() {
         </div>
       </section>
       <section className="bg-white py-24">
-        <div className="container-shell grid gap-8">
-          {groups.map((group) => (
+        <div className="container-shell grid gap-8 md:grid-cols-2">
+          {leadershipGroups.map((group) => (
             <article key={group.title} className="border border-charcoal-100 p-7">
               <h2 className="font-display text-4xl">{group.title}</h2>
-              <p className="mt-4 max-w-4xl text-sm leading-7 text-charcoal-600">
-                {group.description}
-              </p>
-              <div className="mt-7 grid gap-3 md:grid-cols-2">
-                {group.roles.map((role) => (
-                  <p key={role} className="bg-charcoal-50 p-4 text-sm leading-7 text-charcoal-700">
-                    {role}
-                  </p>
-                ))}
-              </div>
+              <p className="mt-4 text-sm leading-7 text-charcoal-600">{group.description}</p>
             </article>
           ))}
         </div>

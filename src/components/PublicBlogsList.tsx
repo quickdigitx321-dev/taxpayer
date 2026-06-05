@@ -1,34 +1,10 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { FileText } from "lucide-react";
-import { getPublishedBlogs, PublicBlog } from "@/lib/publicBlogApi";
+import { getServerBlogs } from "@/lib/serverContent";
 
-export function PublicBlogsList({ limit }: { limit?: number }) {
-  const [blogs, setBlogs] = useState<PublicBlog[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+export async function PublicBlogsList({ limit }: { limit?: number }) {
+  const blogs = await getServerBlogs();
   const visibleBlogs = typeof limit === "number" ? blogs.slice(0, limit) : blogs;
-
-  useEffect(() => {
-    getPublishedBlogs()
-      .then(setBlogs)
-      .catch((err) => setError(err instanceof Error ? err.message : "Could not load blogs."))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) {
-    return <p className="mt-12 text-charcoal-500">Loading blogs...</p>;
-  }
-
-  if (error) {
-    return (
-      <div className="mt-12 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {error}
-      </div>
-    );
-  }
 
   if (visibleBlogs.length === 0) {
     return (
@@ -64,7 +40,7 @@ export function PublicBlogsList({ limit }: { limit?: number }) {
             {blog.excerpt || "Read the latest TPAP update."}
           </p>
           <p className="mt-7 text-xs font-semibold uppercase tracking-[0.16em] text-charcoal-400">
-            {new Date(blog.published_at || blog.created_at).toLocaleDateString()}
+            {new Date(blog.published_at || blog.created_at).toLocaleDateString("en-PK")} / {blog.author}
           </p>
         </Link>
       ))}

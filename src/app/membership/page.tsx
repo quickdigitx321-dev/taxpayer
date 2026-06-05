@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { MembershipForm } from "@/components/forms/MembershipForm";
 import { PageShell } from "@/components/PageShell";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   title: "Join TPAP | Membership Benefits for Pakistani Taxpayers & Businesses",
   description:
     "Become a TPAP member today. Access exclusive tax research, policy advocacy, complaint support, and networking. Individual, business, student, and corporate memberships available.",
-  keywords: ["join TPAP", "taxpayer membership Pakistan", "taxpayer association Pakistan", "tax advocacy membership"]
+  keywords: ["join TPAP", "taxpayer membership Pakistan", "taxpayer association Pakistan", "tax advocacy membership", "taxpayer rights"]
 };
 
 export default function MembershipPage() {
@@ -31,6 +32,9 @@ export default function MembershipPage() {
             Membership is open to every Pakistani, regardless of profession, industry,
             or income level. If you pay taxes, support fair taxation, or believe in
             transparent governance, TPAP is your platform.
+          </p>
+          <p className="mt-5 text-sm leading-7 text-charcoal-600">
+            Members strengthen TPAP&apos;s <Link className="font-bold text-forest-800" href="/policy-advocacy">policy advocacy</Link> and can use our structured <Link className="font-bold text-forest-800" href="/complaints">taxpayer complaint channel</Link> when they need support.
           </p>
         </div>
       </section>

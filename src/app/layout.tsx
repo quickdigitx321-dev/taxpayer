@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://taxpayersalliancepakistan.com";
+const siteUrl = "https://taxpayersalliancepakistan.com";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+const baseMetadata: Metadata = {
   applicationName: "Tax Payers Alliance Pakistan",
   authors: [{ name: "Tax Payers Alliance Pakistan", url: siteUrl }],
   creator: "Tax Payers Alliance Pakistan",
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
   category: "Taxpayer Advocacy",
   title: {
     default: "Tax Payers Alliance Pakistan (TPAP) | Taxpayer Rights & Tax Reform Advocacy",
-    template: "%s | Tax Payer Alliance Pakistan"
+    template: "%s | Tax Payers Alliance Pakistan"
   },
   description:
     "TPAP is Pakistan's leading taxpayer advocacy alliance. We fight for lower taxes, simpler compliance, and transparent government spending. Join thousands of Pakistani taxpayers today.",
@@ -22,26 +21,12 @@ export const metadata: Metadata = {
     "TPAP",
     "taxpayer advocacy",
     "tax reform Pakistan",
-    "taxpayer rights Pakistan",
+    "FBR reform",
+    "taxpayer rights",
     "fiscal transparency",
-    "government accountability",
-    "taxpayer representation",
-    "Taxpayer Association Pakistan",
-    "Tax Complaints Pakistan",
-    "Economic Policy Pakistan",
-    "Public Finance Pakistan",
-    "Taxpayer Community",
-    "FBR Reforms",
-    "SME Taxation Pakistan",
-    "Government Spending Pakistan",
-    "Ease of Doing Business Pakistan",
-    "Withholding Tax Pakistan",
-    "GST Pakistan",
-    "Pakistan Finance Act",
-    "Tax Simplification Pakistan"
   ],
   openGraph: {
-    title: "Tax Payer Alliance Pakistan",
+    title: "Tax Payers Alliance Pakistan",
     description:
       "Pakistan's national taxpayer advocacy alliance for lower taxes, simpler compliance, and accountable government spending.",
     type: "website",
@@ -50,9 +35,9 @@ export const metadata: Metadata = {
     siteName: "Tax Payers Alliance Pakistan",
     images: [
       {
-        url: "/brand/tpap-logo-blue.png",
-        width: 485,
-        height: 201,
+        url: "/brand/tpap-social-share.jpg",
+        width: 1200,
+        height: 630,
         alt: "Tax Payers Alliance Pakistan"
       }
     ]
@@ -62,7 +47,7 @@ export const metadata: Metadata = {
     title: "Tax Payers Alliance Pakistan",
     description:
       "Pakistan's national taxpayer advocacy alliance for fair taxation, simpler compliance, and accountable public spending.",
-    images: ["/brand/tpap-logo-blue.png"]
+    images: ["/brand/tpap-social-share.jpg"]
   },
   robots: {
     index: true,
@@ -76,6 +61,16 @@ export const metadata: Metadata = {
     }
   }
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const path = requestHeaders.get("x-canonical-path") || "/";
+  return {
+    ...baseMetadata,
+    metadataBase: new URL(siteUrl),
+    alternates: { canonical: new URL(path, siteUrl).toString() }
+  };
+}
 
 export default function RootLayout({
   children

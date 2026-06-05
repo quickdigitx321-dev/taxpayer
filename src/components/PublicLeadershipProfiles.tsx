@@ -1,18 +1,12 @@
-"use client";
+import { getServerLeadershipProfiles, ServerLeadershipProfile } from "@/lib/serverContent";
 
-import { useEffect, useMemo, useState } from "react";
-import {
-  getPublicLeadershipProfiles,
-  PublicLeadershipProfile
-} from "@/lib/publicLeadershipApi";
-
-function ProfileCard({ profile }: { profile: PublicLeadershipProfile }) {
+function ProfileCard({ profile }: { profile: ServerLeadershipProfile }) {
   return (
     <article className="bg-white p-6 text-center shadow-soft">
       <div className="mx-auto grid aspect-square max-w-64 place-items-center overflow-hidden rounded-full bg-forest-950 text-gold-200">
         {profile.image_url ? (
           <img
-            alt={profile.name}
+            alt={`${profile.name}, ${profile.designation}, TPAP`}
             className="h-full w-full object-cover"
             src={profile.image_url}
           />
@@ -31,40 +25,10 @@ function ProfileCard({ profile }: { profile: PublicLeadershipProfile }) {
   );
 }
 
-export function PublicLeadershipProfiles() {
-  const [profiles, setProfiles] = useState<PublicLeadershipProfile[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getPublicLeadershipProfiles()
-      .then(setProfiles)
-      .catch((err) =>
-        setError(err instanceof Error ? err.message : "Could not load leadership profiles.")
-      )
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  const currentProfiles = useMemo(
-    () => profiles.filter((profile) => profile.profile_type === "current"),
-    [profiles]
-  );
-  const formerProfiles = useMemo(
-    () => profiles.filter((profile) => profile.profile_type === "former"),
-    [profiles]
-  );
-
-  if (isLoading) {
-    return <p className="mt-12 text-center text-charcoal-500">Loading leadership...</p>;
-  }
-
-  if (error) {
-    return (
-      <div className="mt-12 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {error}
-      </div>
-    );
-  }
+export async function PublicLeadershipProfiles() {
+  const profiles = await getServerLeadershipProfiles();
+  const currentProfiles = profiles.filter((profile) => profile.profile_type === "current");
+  const formerProfiles = profiles.filter((profile) => profile.profile_type === "former");
 
   if (profiles.length === 0) {
     return (
