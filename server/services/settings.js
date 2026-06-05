@@ -4,13 +4,13 @@ const defaultSettings = {
   siteTitle: "Tax Payer Alliance Pakistan",
   logoUrl: "",
   faviconUrl: "",
-  contactEmail: "basitdev.bk@gmail.com",
+  contactEmail: "info@tpap.org.pk",
   phone: "",
   address: "",
-  facebook: "",
-  twitter: "",
-  linkedin: "",
-  instagram: "",
+  facebook: "https://www.facebook.com/share/1HSmyqtAVT/",
+  twitter: "https://x.com/tpap_prime",
+  linkedin: "https://www.linkedin.com/company/tax-payers-alliance-pakistan-tpap/",
+  instagram: "https://www.instagram.com/tpap_prime",
   whatsapp: "",
   footerText:
     "Official digital platform for TPAP membership, public submissions, leadership, articles, and taxpayer advocacy.",
@@ -34,7 +34,8 @@ async function ensureSettingsTable() {
       pool.execute(
         `INSERT INTO website_settings (setting_key, setting_value)
          VALUES (?, ?)
-         ON DUPLICATE KEY UPDATE setting_key = setting_key`,
+         ON DUPLICATE KEY UPDATE
+           setting_value = IF(setting_value IS NULL OR setting_value = '', VALUES(setting_value), setting_value)`,
         [key, value]
       )
     )

@@ -23,6 +23,10 @@ function renderInlineFormatting(text: string) {
 
 function renderContent(content: string) {
   return content.split(/\n+/).map((paragraph, index) => {
+    if (paragraph.startsWith("<!--")) {
+      return null;
+    }
+
     if (paragraph.startsWith("# ")) {
       return (
         <h1 className="font-display text-5xl leading-tight text-charcoal-950" key={index}>

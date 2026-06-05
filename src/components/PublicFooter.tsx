@@ -84,6 +84,11 @@ export function PublicFooter() {
                 {item.label}
               </Link>
             ))}
+            <Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/terms-of-use" className="hover:text-white">Terms of Use</Link>
+            <Link href="/media-press" className="hover:text-white">Media &amp; Press</Link>
+            <Link href="/careers" className="hover:text-white">Careers</Link>
+            <Link href="/partner-with-us" className="hover:text-white">Partner With Us</Link>
           </div>
         </div>
 

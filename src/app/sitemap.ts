@@ -7,12 +7,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     "",
     "/about",
+    "/policy-advocacy",
     "/services",
     "/membership",
     "/complaints",
     "/contact",
     "/blogs",
-    "/leadership"
+    "/leadership",
+    "/faq",
+    "/privacy-policy",
+    "/terms-of-use",
+    "/media-press",
+    "/careers",
+    "/partner-with-us"
   ].map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),

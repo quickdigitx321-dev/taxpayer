@@ -12,7 +12,7 @@ export default async function BlogDetailPage({
     <PageShell
       eyebrow="Article"
       title="TPAP Insights"
-      description="Published articles, updates, and information from Tax Payer Alliance Pakistan."
+      description="Research, analysis, and commentary on taxation, public finance, taxpayer rights, and Pakistan's economic policy."
     >
       <PublicBlogDetail slug={slug} />
     </PageShell>

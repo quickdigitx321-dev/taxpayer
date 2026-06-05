@@ -5,19 +5,19 @@ export const fallbackSettings: WebsiteSettings = {
   siteTitle: "Tax Payer Alliance Pakistan",
   logoUrl: "",
   faviconUrl: "",
-  contactEmail: "admin@taxpayeralliancepakistan.com",
+  contactEmail: "admin@taxpayersalliancepakistan.com",
   phone: "",
   address: "",
-  facebook: "",
-  twitter: "",
-  linkedin: "",
-  instagram: "",
+  facebook: "https://www.facebook.com/share/1HSmyqtAVT/",
+  twitter: "https://x.com/tpap_prime",
+  linkedin: "https://www.linkedin.com/company/tax-payers-alliance-pakistan-tpap/",
+  instagram: "https://www.instagram.com/tpap_prime",
   whatsapp: "",
   footerText:
-    "Official digital platform for TPAP membership, public submissions, leadership, articles, and taxpayer advocacy.",
+    "Pakistan's national taxpayer advocacy alliance for lower taxes, simpler compliance, fiscal transparency, and accountable government spending.",
   seoTitle: "Tax Payer Alliance Pakistan",
   seoDescription:
-    "Official website of Tax Payer Alliance Pakistan for membership, taxpayer advocacy, articles, and public submissions.",
+    "Tax Payer Alliance Pakistan represents taxpayers through research, policy advocacy, public education, and complaint support.",
   analyticsCode: ""
 };
 

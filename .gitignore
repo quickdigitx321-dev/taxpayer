@@ -10,6 +10,7 @@ dist
 .codex-*.log
 .codex-*.pid
 /*.docx
+!/TPAP_Website_Content.docx
 /*.jpg
 server/uploads/*
 !server/uploads/.gitkeep
