@@ -20,7 +20,7 @@ export function PublicHeader() {
     <header className="absolute inset-x-0 top-0 z-30 border-b border-white/10 bg-forest-950/20 backdrop-blur-sm">
       <div className="container-shell flex h-20 items-center justify-between">
         <Link href="/" className="flex min-w-0 items-center gap-3 text-white">
-          <span className="grid size-10 shrink-0 place-items-center overflow-hidden border border-gold-300/60 text-sm font-bold text-gold-200">
+          <span className="grid h-12 w-40 shrink-0 place-items-center overflow-hidden">
             {settings.logoUrl ? (
               <img
                 alt={settings.siteTitle}
@@ -28,20 +28,16 @@ export function PublicHeader() {
                 src={settings.logoUrl}
               />
             ) : (
-              "TP"
+              <img
+                alt="TPAP"
+                className="h-full w-full object-contain"
+                src="/brand/tpap-logo-white.png"
+              />
             )}
-          </span>
-          <span className="min-w-0 leading-tight">
-            <span className="block text-sm font-semibold tracking-[0.22em]">
-              TPAP
-            </span>
-            <span className="hidden truncate text-xs text-white/58 sm:block">
-              {settings.siteTitle}
-            </span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-xs font-semibold uppercase tracking-[0.16em] text-white/70 lg:flex">
+        <nav className="hidden items-center gap-6 text-xs font-semibold uppercase tracking-[0.14em] text-white/70 xl:flex">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className="hover:text-white">
               {item.label}
@@ -57,7 +53,7 @@ export function PublicHeader() {
             Join TPAP
           </Link>
           <button
-            className="grid size-10 place-items-center rounded-full border border-white/15 text-white lg:hidden"
+            className="grid size-10 place-items-center rounded-full border border-white/15 text-white xl:hidden"
             aria-expanded={isOpen}
             aria-label={isOpen ? "Close navigation" : "Open navigation"}
             onClick={() => setIsOpen((current) => !current)}
@@ -68,7 +64,7 @@ export function PublicHeader() {
       </div>
 
       {isOpen ? (
-        <div className="border-t border-white/10 bg-forest-950/95 px-4 py-4 shadow-premium lg:hidden">
+        <div className="border-t border-white/10 bg-forest-950/95 px-4 py-4 shadow-premium xl:hidden">
           <nav className="container-shell grid gap-2 text-sm font-semibold text-white/76">
             {navItems.map((item) => (
               <Link

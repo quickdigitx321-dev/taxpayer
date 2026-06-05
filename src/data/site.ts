@@ -20,6 +20,7 @@ export const navItems = [
   { label: "Complaints", href: "/complaints" },
   { label: "Leadership", href: "/leadership" },
   { label: "Blogs", href: "/blogs" },
+  { label: "Press", href: "/press-releases" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" }
 ];
