@@ -42,43 +42,86 @@ function rows(items) {
 async function sendMembershipNotifications(data, id) {
   const reference = `TPAP-APP-${String(id).padStart(5, "0")}`;
 
-  await Promise.all([
-    sendMail({
-      to: adminEmail(),
-      subject: `New TPAP membership application - ${reference}`,
-      text: `New membership application received from ${data.firstName} ${data.lastName}. Reference: ${reference}. Email: ${data.email}. Phone: ${data.phone}.`,
-      html: shell(
-        "New membership application received",
-        `
-          <p>A new membership application has been submitted for admin review.</p>
-          ${rows([
-            ["Reference", reference],
-            ["Applicant", `${data.firstName} ${data.lastName}`],
-            ["Email", data.email],
-            ["Phone", data.phone],
-            ["CNIC", data.cnic],
-            ["NTN", data.ntn],
-            ["Organization", data.organizationName],
-            ["Office Address", data.officeAddress]
-          ])}
-        `
-      )
-    }),
-    sendMail({
-      to: data.email,
-      subject: `TPAP membership application received - ${reference}`,
-      text: `Thank you for applying for TPAP membership. Your application has been received and is under review. Reference: ${reference}.`,
-      html: shell(
-        "Your membership application has been received",
-        `
-          <p>Dear ${data.firstName},</p>
-          <p>Thank you for applying for membership with Tax Payer Alliance Pakistan. Your application has been received successfully and is now under review by the admin team.</p>
-          <p><strong>Reference number:</strong> ${reference}</p>
-          <p>We will review your profile and contact you if any further information is required.</p>
-        `
-      )
-    })
-  ]);
+  const customer = await sendMail({
+    to: data.email,
+    subject: `TPAP membership application received - ${reference}`,
+    text: `Thank you for applying for TPAP membership. Your application has been received and is under review. Reference: ${reference}.`,
+    html: shell(
+      "Your membership application has been received",
+      `
+        <p>Dear ${data.firstName},</p>
+        <p>Thank you for applying for membership with Tax Payer Alliance Pakistan. Your application has been received successfully and is now under review by the TPAP team.</p>
+        <p><strong>Reference number:</strong> ${reference}</p>
+        <p>We will notify you by email when your application status changes.</p>
+      `
+    )
+  });
+
+  const admin = await sendMail({
+    to: adminEmail(),
+    subject: `New TPAP membership application - ${reference}`,
+    text: `New membership application received from ${data.firstName} ${data.lastName}. Reference: ${reference}. Email: ${data.email}. Phone: ${data.phone}.`,
+    html: shell(
+      "New membership application received",
+      `
+        <p>A new membership application has been submitted for admin review.</p>
+        ${rows([
+          ["Reference", reference],
+          ["Applicant", `${data.firstName} ${data.lastName}`],
+          ["Email", data.email],
+          ["Phone", data.phone],
+          ["CNIC", data.cnic],
+          ["NTN", data.ntn],
+          ["Organization", data.organizationName],
+          ["Office Address", data.officeAddress]
+        ])}
+      `
+    )
+  });
+
+  return { customer, admin };
+}
+
+async function sendMembershipStatusNotification(application, status, membershipId, adminNotes) {
+  const applicantName = `${application.first_name} ${application.last_name}`.trim();
+  const applicationReference = `TPAP-APP-${String(application.id).padStart(5, "0")}`;
+  const isApproved = status === "approved";
+  const isRejected = status === "rejected";
+  const title = isApproved
+    ? "Your TPAP membership application has been approved"
+    : isRejected
+      ? "Update on your TPAP membership application"
+      : "Your TPAP membership application is under review";
+  const summary = isApproved
+    ? `Congratulations. Your TPAP membership application has been approved. Your membership ID is ${membershipId}.`
+    : isRejected
+      ? "Your TPAP membership application was not approved at this time."
+      : "Your TPAP membership application status has been updated to pending review.";
+  const nextStep = isApproved
+    ? "Welcome to Tax Payer Alliance Pakistan. We will contact you with membership updates, opportunities, and advocacy activities."
+    : isRejected
+      ? "You may contact the TPAP team if you require clarification or wish to submit updated information."
+      : "The TPAP team will notify you when the review is complete.";
+
+  return sendMail({
+    to: application.email,
+    subject: `${title} - ${applicationReference}`,
+    text: `${summary} ${nextStep}${adminNotes ? ` Admin note: ${adminNotes}` : ""}`,
+    html: shell(
+      title,
+      `
+        <p>Dear ${applicantName || "Applicant"},</p>
+        <p>${summary}</p>
+        ${rows([
+          ["Application reference", applicationReference],
+          ["Status", status.replace("_", " ").toUpperCase()],
+          ["Membership ID", membershipId || "-"],
+          ["Admin note", adminNotes || "-"]
+        ])}
+        <p>${nextStep}</p>
+      `
+    )
+  });
 }
 
 async function sendComplaintNotifications(data, id) {
@@ -161,6 +204,7 @@ async function sendContactNotifications(data, id) {
 
 module.exports = {
   sendMembershipNotifications,
+  sendMembershipStatusNotification,
   sendComplaintNotifications,
   sendContactNotifications
 };

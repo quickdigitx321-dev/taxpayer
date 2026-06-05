@@ -80,11 +80,12 @@ router.post(
       ]
     );
 
-    await sendMembershipNotifications(data, result.insertId);
+    const notifications = await sendMembershipNotifications(data, result.insertId);
 
     res.status(201).json({
       message: "Membership application submitted successfully.",
-      id: result.insertId
+      id: result.insertId,
+      customerNotificationSent: Boolean(notifications.customer.sent)
     });
   })
 );

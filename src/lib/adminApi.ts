@@ -168,7 +168,7 @@ export function updateMembershipStatus(
   status: MembershipRecord["status"],
   adminNotes = ""
 ) {
-  return request<{ message: string }>(`/admin/membership-applications/${id}/status`, {
+  return request<{ message: string; customerNotificationSent: boolean }>(`/admin/membership-applications/${id}/status`, {
     method: "PATCH",
     token,
     body: JSON.stringify({ status, adminNotes })

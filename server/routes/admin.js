@@ -6,6 +6,7 @@ const { pool } = require("../config/db");
 const { requireAdmin } = require("../middleware/auth");
 const { imageUpload } = require("../middleware/upload");
 const { defaultSettings, getSettings, updateSettings } = require("../services/settings");
+const { sendMembershipStatusNotification } = require("../services/notifications");
 const { asyncHandler } = require("../utils/asyncHandler");
 
 const router = express.Router();
@@ -197,6 +198,19 @@ router.patch(
       adminNotes: z.string().trim().max(2000).optional().nullable()
     });
     const data = schema.parse(req.body);
+    const [applicationRows] = await pool.execute(
+      `SELECT id, first_name, last_name, email, status
+       FROM membership_applications
+       WHERE id = ?
+       LIMIT 1`,
+      [req.params.id]
+    );
+    const application = applicationRows[0];
+
+    if (!application) {
+      return res.status(404).json({ message: "Membership application not found." });
+    }
+
     const membershipId =
       data.status === "approved" ? `TPAP-${String(req.params.id).padStart(5, "0")}` : null;
 
@@ -207,7 +221,20 @@ router.patch(
       [data.status, data.adminNotes || null, membershipId, req.params.id]
     );
 
-    return res.json({ message: "Membership application updated successfully." });
+    const notification =
+      application.status !== data.status
+        ? await sendMembershipStatusNotification(
+            application,
+            data.status,
+            membershipId,
+            data.adminNotes || ""
+          )
+        : { sent: false, skipped: true };
+
+    return res.json({
+      message: "Membership application updated successfully.",
+      customerNotificationSent: Boolean(notification.sent)
+    });
   })
 );
 

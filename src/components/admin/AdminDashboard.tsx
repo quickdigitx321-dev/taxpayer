@@ -335,9 +335,20 @@ export function AdminDashboard() {
     setNotice("");
 
     try {
-      await updateMembershipStatus(token, id, status, `Marked ${status} from dashboard.`);
+      const response = await updateMembershipStatus(
+        token,
+        id,
+        status,
+        `Marked ${status} from dashboard.`
+      );
       await loadData();
-      setNotice(`Membership application marked ${status}.`);
+      setNotice(
+        `Membership application marked ${status}.${
+          response.customerNotificationSent
+            ? " The applicant was notified by email."
+            : " No applicant email was sent because the status was unchanged or SMTP delivery was not accepted."
+        }`
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not update membership.");
     } finally {

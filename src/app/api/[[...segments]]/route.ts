@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const { pool } = require("../../../../server/config/db");
 const {
   sendMembershipNotifications,
+  sendMembershipStatusNotification,
   sendComplaintNotifications,
   sendContactNotifications
 } = require("../../../../server/services/notifications");
@@ -359,12 +360,13 @@ export async function POST(request: NextRequest, context: RouteContext) {
         ]
       );
 
-      await sendMembershipNotifications(data, result.insertId);
+      const notifications = await sendMembershipNotifications(data, result.insertId);
 
       return json(
         {
           message: "Membership application submitted successfully.",
-          id: result.insertId
+          id: result.insertId,
+          customerNotificationSent: Boolean(notifications.customer.sent)
         },
         201
       );
@@ -627,6 +629,19 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         adminNotes: z.string().trim().max(2000).optional().nullable()
       });
       const data = schema.parse(await bodyJson(request));
+      const [applicationRows] = await pool.execute(
+        `SELECT id, first_name, last_name, email, status
+         FROM membership_applications
+         WHERE id = ?
+         LIMIT 1`,
+        [third]
+      );
+      const application = applicationRows[0];
+
+      if (!application) {
+        return json({ message: "Membership application not found." }, 404);
+      }
+
       const membershipId =
         data.status === "approved" ? `TPAP-${String(third).padStart(5, "0")}` : null;
 
@@ -637,7 +652,20 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         [data.status, data.adminNotes || null, membershipId, third]
       );
 
-      return json({ message: "Membership application updated successfully." });
+      const notification =
+        application.status !== data.status
+          ? await sendMembershipStatusNotification(
+              application,
+              data.status,
+              membershipId,
+              data.adminNotes || ""
+            )
+          : { sent: false, skipped: true };
+
+      return json({
+        message: "Membership application updated successfully.",
+        customerNotificationSent: Boolean(notification.sent)
+      });
     }
 
     if (second === "complaints" && third) {
