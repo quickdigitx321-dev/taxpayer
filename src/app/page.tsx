@@ -34,15 +34,15 @@ export default function Home() {
             <p className="inline-flex border-l-2 border-gold-300 pl-4 text-xs font-bold uppercase tracking-[0.26em] text-gold-200">
               Pakistan&apos;s National Taxpayer Advocacy Alliance
             </p>
-            <h1 className="mt-7 max-w-5xl font-display text-5xl leading-[0.94] text-white md:text-7xl lg:text-[5.9rem]">
+            <h1 className="mt-5 max-w-4xl font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
               Pakistan&apos;s Taxpayers Deserve a Seat at the Table.
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/70 lg:text-lg lg:leading-8">
               TPAP is Pakistan&apos;s leading taxpayer advocacy alliance,
               fighting for lower taxes, simpler compliance, and a government
               that spends your money wisely.
             </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/membership"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gold-300 px-7 py-3.5 text-sm font-bold text-charcoal-950 transition hover:bg-gold-200"
