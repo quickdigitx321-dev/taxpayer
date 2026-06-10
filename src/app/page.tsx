@@ -10,6 +10,7 @@ import { PublicFooter } from "@/components/PublicFooter";
 import { PublicBlogsList } from "@/components/PublicBlogsList";
 import { PublicHeader } from "@/components/PublicHeader";
 import { SectionHeading } from "@/components/SectionHeading";
+import { MotionReveal, MotionSection } from "@/components/home/HomeMotion";
 import {
   homeMemberBenefits,
   objectives,
@@ -22,14 +23,17 @@ import {
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#f8f6f1]">
-      <section className="relative flex min-h-screen flex-col overflow-hidden bg-charcoal-950 text-white">
+      <MotionSection
+        hero
+        className="relative flex min-h-screen flex-col overflow-hidden bg-charcoal-950 text-white"
+      >
         <PublicHeader />
         <div className="absolute inset-0 bg-forest-950" />
         <div className="absolute right-0 top-0 h-full w-[42%] bg-charcoal-950/70" />
         <div className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(90deg,rgba(214,176,82,.35)_1px,transparent_1px),linear-gradient(rgba(214,176,82,.24)_1px,transparent_1px)] [background-size:88px_88px]" />
 
         <div className="container-shell relative z-10 grid flex-1 items-center gap-10 pb-10 pt-28 lg:grid-cols-[1.05fr_0.95fr] lg:pt-24">
-          <div>
+          <MotionReveal direction="left" delay={0.15}>
             <p className="inline-flex border-l-2 border-gold-300 pl-4 text-xs font-bold uppercase tracking-[0.26em] text-gold-200">
               Pakistan&apos;s National Taxpayer Advocacy Alliance
             </p>
@@ -55,9 +59,13 @@ export default function Home() {
                 Learn What We Stand For <ArrowRight size={17} />
               </Link>
             </div>
-          </div>
+          </MotionReveal>
 
-          <div className="relative hidden lg:block">
+          <MotionReveal
+            className="relative hidden lg:block"
+            direction="right"
+            delay={0.32}
+          >
             <div className="absolute -left-8 top-10 h-56 w-40 border border-gold-300/40" />
             <div className="relative ml-auto max-w-[480px] border border-white/12 bg-white/[0.07] p-5 shadow-premium backdrop-blur">
               <div className="bg-[#f8f6f1] p-7 text-charcoal-950">
@@ -101,7 +109,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </MotionReveal>
         </div>
 
         <div className="relative z-20 border-t border-white/10 bg-charcoal-950/72 backdrop-blur">
@@ -116,9 +124,9 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="bg-[#f2f7fb] py-16 md:py-20 lg:py-24">
+      <MotionSection className="bg-[#f2f7fb] py-16 md:py-20 lg:py-24">
         <div className="container-shell">
           <div className="relative overflow-hidden border border-forest-100 bg-white/80 px-6 py-10 shadow-soft md:px-10 md:py-12 lg:px-14 lg:py-14">
             <div
@@ -182,9 +190,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="bg-white py-16 md:py-20 lg:py-24">
+      <MotionSection className="bg-white py-16 md:py-20 lg:py-24">
         <div className="container-shell">
           <div className="grid overflow-hidden border border-forest-100 bg-[#f6f9fc] shadow-soft lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
             <div className="px-6 py-10 md:px-10 md:py-12 lg:px-14 lg:py-14">
@@ -236,9 +244,9 @@ export default function Home() {
             </aside>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="relative overflow-hidden bg-[#f6f9fc] py-16 md:py-20 lg:py-24">
+      <MotionSection className="relative overflow-hidden bg-[#f6f9fc] py-16 md:py-20 lg:py-24">
         <div
           aria-hidden="true"
           className="absolute inset-y-0 right-0 hidden w-[38%] border-l border-forest-100 bg-white/35 lg:block"
@@ -303,9 +311,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="py-24">
+      <MotionSection className="py-24">
         <div className="container-shell">
           <SectionHeading
             eyebrow="Taxpayer Voices"
@@ -343,9 +351,9 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="relative overflow-hidden bg-forest-950 py-16 text-white md:py-20 lg:py-24">
+      <MotionSection className="relative overflow-hidden bg-forest-950 py-16 text-white md:py-20 lg:py-24">
         <div
           aria-hidden="true"
           className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(90deg,rgba(255,255,255,.16)_1px,transparent_1px),linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:96px_96px]"
@@ -419,9 +427,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="bg-[#f6f9fc] py-16 md:py-20 lg:py-24">
+      <MotionSection className="bg-[#f6f9fc] py-16 md:py-20 lg:py-24">
         <div className="container-shell">
           <div className="grid gap-8 border-b border-forest-100 pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:pb-12">
             <div className="max-w-3xl">
@@ -477,9 +485,9 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="bg-white py-24">
+      <MotionSection className="bg-white py-24">
         <div className="container-shell">
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <SectionHeading
@@ -496,9 +504,9 @@ export default function Home() {
           </div>
           <PublicBlogsList limit={3} />
         </div>
-      </section>
+      </MotionSection>
 
-      <section className="relative overflow-hidden bg-charcoal-950 py-16 text-white md:py-20 lg:py-24">
+      <MotionSection className="relative overflow-hidden bg-charcoal-950 py-16 text-white md:py-20 lg:py-24">
         <div
           aria-hidden="true"
           className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(90deg,rgba(214,176,82,.2)_1px,transparent_1px),linear-gradient(rgba(255,255,255,.1)_1px,transparent_1px)] [background-size:104px_104px]"
@@ -624,7 +632,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       <PublicFooter />
     </main>

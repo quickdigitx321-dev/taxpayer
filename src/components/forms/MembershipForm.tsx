@@ -135,7 +135,7 @@ export function MembershipForm() {
     <form
       noValidate
       onSubmit={handleSubmit}
-      className="grid gap-5 bg-white p-6 shadow-soft md:grid-cols-2"
+      className="grid gap-5 border border-charcoal-100 bg-white p-8 shadow-[0_16px_56px_rgba(0,38,66,0.09)] md:grid-cols-2"
     >
       <input
         aria-hidden="true"
@@ -151,16 +151,18 @@ export function MembershipForm() {
       {fields.map((field) => (
         <label
           key={field.name}
-          className={`grid gap-2 text-sm font-semibold ${
-            field.wide ? "md:col-span-2" : ""
-          }`}
+          className={`grid gap-1.5 ${field.wide ? "md:col-span-2" : ""}`}
         >
-          {field.label}
+          <span className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal-700">
+            {field.label}
+          </span>
           <input
             autoComplete={field.autoComplete}
             aria-invalid={Boolean(fieldErrors[field.name])}
-            className={`border px-4 py-3 outline-none focus:border-forest-700 ${
-              fieldErrors[field.name] ? "border-red-300 bg-red-50" : "border-charcoal-100"
+            className={`border px-4 py-3 text-sm text-charcoal-900 outline-none transition-colors duration-150 placeholder:text-charcoal-300 focus:border-forest-600 focus:ring-2 focus:ring-forest-100 ${
+              fieldErrors[field.name]
+                ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-50"
+                : "border-charcoal-200 bg-white hover:border-charcoal-300"
             }`}
             name={field.name}
             onChange={(event) => {
@@ -168,11 +170,7 @@ export function MembershipForm() {
                 field.name === "cnic"
                   ? formatCnic(event.target.value)
                   : event.target.value;
-
-              setValues((current) => ({
-                ...current,
-                [field.name]: value
-              }));
+              setValues((current) => ({ ...current, [field.name]: value }));
               setFieldErrors((current) => ({ ...current, [field.name]: "" }));
             }}
             placeholder={field.placeholder}
@@ -180,26 +178,27 @@ export function MembershipForm() {
             inputMode={field.name === "cnic" ? "numeric" : undefined}
             maxLength={field.name === "cnic" ? 15 : undefined}
             pattern={field.name === "cnic" ? "\\d{5}-\\d{7}-\\d{1}" : undefined}
-            title={
-              field.name === "cnic"
-                ? "Enter CNIC in this format: 12345-1234567-1"
-                : undefined
-            }
+            title={field.name === "cnic" ? "Enter CNIC in this format: 12345-1234567-1" : undefined}
             value={values[field.name]}
           />
           {fieldErrors[field.name] ? (
-            <span className="text-xs font-semibold text-red-700">
+            <span className="text-xs font-medium text-red-700">
               {fieldErrors[field.name]}
             </span>
           ) : null}
         </label>
       ))}
-      <button
-        className="rounded-full bg-forest-800 px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 md:col-span-2"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Submitting..." : "Submit Application"}
-      </button>
+      <div className="md:col-span-2">
+        <button
+          className="w-full bg-forest-800 px-6 py-3.5 text-sm font-bold tracking-wide text-white transition-colors duration-150 hover:bg-forest-700 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Submitting…" : "Submit Application →"}
+        </button>
+        <p className="mt-3 text-center text-xs text-charcoal-400">
+          Your information is kept confidential and will only be used for membership processing.
+        </p>
+      </div>
     </form>
   );
 }

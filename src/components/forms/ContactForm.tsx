@@ -100,89 +100,89 @@ export function ContactForm() {
     setFieldErrors((current) => ({ ...current, [name]: "" }));
   }
 
+  const inputBase = "w-full border bg-white px-4 py-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 outline-none transition-colors duration-150 focus:border-forest-600 focus:ring-1 focus:ring-forest-600/20";
+  const inputNormal = "border-charcoal-200";
+  const inputError = "border-red-300 bg-red-50";
+
   return (
-    <form noValidate onSubmit={handleSubmit} className="grid gap-5 bg-white p-6 shadow-soft">
-      <input
-        aria-hidden="true"
-        autoComplete="off"
-        className="hidden"
-        name="website"
-        tabIndex={-1}
-      />
+    <form
+      noValidate
+      onSubmit={handleSubmit}
+      className="border border-charcoal-100 bg-white p-8 shadow-[0_8px_40px_rgba(0,38,66,0.08)]"
+    >
+      <input aria-hidden="true" autoComplete="off" className="hidden" name="website" tabIndex={-1} />
       <input name="formStartedAt" type="hidden" value={formStartedAt.current} />
+
+      <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-forest-600">
+        Send a Message
+      </p>
+
       <FormStatus status={status} />
-      <label className="grid gap-2 text-sm font-semibold">
-        Name
-        <input
-          autoComplete="name"
-          aria-invalid={Boolean(fieldErrors.name)}
-          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
-            fieldErrors.name ? "border-red-300 bg-red-50" : "border-charcoal-100"
-          }`}
-          onChange={(event) => updateField("name", event.target.value)}
-          required
-          value={values.name}
-        />
-        {fieldErrors.name ? (
-          <span className="text-xs font-semibold text-red-700">{fieldErrors.name}</span>
-        ) : null}
-      </label>
-      <label className="grid gap-2 text-sm font-semibold">
-        Email
-        <input
-          autoComplete="email"
-          aria-invalid={Boolean(fieldErrors.email)}
-          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
-            fieldErrors.email ? "border-red-300 bg-red-50" : "border-charcoal-100"
-          }`}
-          onChange={(event) => updateField("email", event.target.value)}
-          placeholder="name@example.com"
-          required
-          type="email"
-          value={values.email}
-        />
-        {fieldErrors.email ? (
-          <span className="text-xs font-semibold text-red-700">{fieldErrors.email}</span>
-        ) : null}
-      </label>
-      <label className="grid gap-2 text-sm font-semibold">
-        Phone
-        <input
-          autoComplete="tel"
-          aria-invalid={Boolean(fieldErrors.phone)}
-          className={`border px-4 py-3 outline-none focus:border-forest-700 ${
-            fieldErrors.phone ? "border-red-300 bg-red-50" : "border-charcoal-100"
-          }`}
-          onChange={(event) => updateField("phone", event.target.value)}
-          placeholder="03001234567"
-          required
-          value={values.phone}
-        />
-        {fieldErrors.phone ? (
-          <span className="text-xs font-semibold text-red-700">{fieldErrors.phone}</span>
-        ) : null}
-      </label>
-      <label className="grid gap-2 text-sm font-semibold">
-        Message
-        <textarea
-          aria-invalid={Boolean(fieldErrors.message)}
-          className={`min-h-36 border px-4 py-3 outline-none focus:border-forest-700 ${
-            fieldErrors.message ? "border-red-300 bg-red-50" : "border-charcoal-100"
-          }`}
-          onChange={(event) => updateField("message", event.target.value)}
-          required
-          value={values.message}
-        />
-        {fieldErrors.message ? (
-          <span className="text-xs font-semibold text-red-700">{fieldErrors.message}</span>
-        ) : null}
-      </label>
-      <button
-        className="rounded-full bg-forest-800 px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Sending..." : "Send Inquiry"}
-      </button>
+
+      <div className="grid gap-5">
+        <label className="grid gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-charcoal-500">Name</span>
+          <input
+            autoComplete="name"
+            aria-invalid={Boolean(fieldErrors.name)}
+            className={`${inputBase} ${fieldErrors.name ? inputError : inputNormal}`}
+            onChange={(e) => updateField("name", e.target.value)}
+            placeholder="Your full name"
+            required
+            value={values.name}
+          />
+          {fieldErrors.name && <span className="text-xs font-medium text-red-600">{fieldErrors.name}</span>}
+        </label>
+
+        <label className="grid gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-charcoal-500">Email</span>
+          <input
+            autoComplete="email"
+            aria-invalid={Boolean(fieldErrors.email)}
+            className={`${inputBase} ${fieldErrors.email ? inputError : inputNormal}`}
+            onChange={(e) => updateField("email", e.target.value)}
+            placeholder="name@example.com"
+            required
+            type="email"
+            value={values.email}
+          />
+          {fieldErrors.email && <span className="text-xs font-medium text-red-600">{fieldErrors.email}</span>}
+        </label>
+
+        <label className="grid gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-charcoal-500">Phone</span>
+          <input
+            autoComplete="tel"
+            aria-invalid={Boolean(fieldErrors.phone)}
+            className={`${inputBase} ${fieldErrors.phone ? inputError : inputNormal}`}
+            onChange={(e) => updateField("phone", e.target.value)}
+            placeholder="03001234567"
+            required
+            value={values.phone}
+          />
+          {fieldErrors.phone && <span className="text-xs font-medium text-red-600">{fieldErrors.phone}</span>}
+        </label>
+
+        <label className="grid gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-charcoal-500">Message</span>
+          <textarea
+            aria-invalid={Boolean(fieldErrors.message)}
+            className={`${inputBase} min-h-[9rem] resize-y ${fieldErrors.message ? inputError : inputNormal}`}
+            onChange={(e) => updateField("message", e.target.value)}
+            placeholder="Describe your inquiry…"
+            required
+            value={values.message}
+          />
+          {fieldErrors.message && <span className="text-xs font-medium text-red-600">{fieldErrors.message}</span>}
+        </label>
+
+        <button
+          className="mt-1 w-full bg-forest-800 px-6 py-3.5 text-sm font-bold tracking-wide text-white transition-colors duration-150 hover:bg-forest-700 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending…" : "Send Inquiry"}
+        </button>
+      </div>
     </form>
   );
 }

@@ -25,23 +25,54 @@ export default function AboutPage() {
       title="Pakistan's national taxpayer advocacy organisation."
       description="Established in 2020 under PRIME, TPAP gives Pakistan's taxpaying citizens an organised, research-backed, and credible voice in fiscal policy."
     >
-      <section className="py-24">
-        <div className="container-shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <SectionHeading
-            eyebrow="Organisation Overview"
-            title="A voluntary citizens' alliance built to represent taxpayers."
-            description="Tax Payers Alliance Pakistan is a landmark initiative of PRIME, the Policy Research Institute of Market Economy. TPAP is not a political party, conventional trade association, or lobbying firm. It is a space where taxpayers can organise, be heard, and actively shape the fiscal policies that govern their lives."
-          />
-          <div className="grid gap-5">
-            {values.map((value) => {
+
+      {/* ── 1. ORGANISATION OVERVIEW ── */}
+      <section className="py-20">
+        <div className="container-shell grid items-center gap-16 lg:grid-cols-[1fr_1fr] xl:gap-24">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-forest-600">
+              Organisation Overview
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <span className="h-px w-8 bg-gold-400" />
+              <span className="h-px flex-1 bg-charcoal-100" />
+            </div>
+            <h2 className="mt-6 font-display text-4xl leading-[1.15] text-charcoal-950 md:text-[2.75rem]">
+              A voluntary citizens&rsquo; alliance built to represent taxpayers.
+            </h2>
+            <p className="mt-6 text-[0.9375rem] leading-[1.85] text-charcoal-600">
+              Tax Payers Alliance Pakistan is a landmark initiative of PRIME, the Policy Research
+              Institute of Market Economy. TPAP is not a political party, conventional trade
+              association, or lobbying firm. It is a space where taxpayers can organise, be heard,
+              and actively shape the fiscal policies that govern their lives.
+            </p>
+          </div>
+
+          <div className="grid gap-3">
+            {values.map((value, i) => {
               const Icon = value.icon;
               return (
-                <article key={value.title} className="border border-charcoal-100 bg-white p-6">
-                  <Icon className="text-forest-700" size={25} />
-                  <h3 className="mt-5 font-display text-3xl">{value.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-charcoal-600">
-                    {value.description}
-                  </p>
+                <article
+                  key={value.title}
+                  className="group relative flex items-start gap-5 border border-charcoal-100 bg-white px-6 py-5 transition-all duration-200 hover:-translate-y-px hover:border-forest-200 hover:shadow-[0_8px_32px_rgba(0,38,66,0.09)]"
+                >
+                  <span className="absolute inset-y-0 left-0 w-[3px] bg-transparent transition-colors duration-200 group-hover:bg-forest-500" />
+                  <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center bg-forest-50 text-forest-700 ring-1 ring-forest-100 transition-all duration-200 group-hover:bg-forest-100 group-hover:ring-forest-300">
+                    <Icon size={19} strokeWidth={1.75} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline gap-2.5">
+                      <span className="font-mono text-[10px] font-semibold tracking-widest text-charcoal-300">
+                        0{i + 1}
+                      </span>
+                      <h3 className="font-display text-xl leading-snug text-charcoal-950">
+                        {value.title}
+                      </h3>
+                    </div>
+                    <p className="mt-2 text-sm leading-[1.8] text-charcoal-500">
+                      {value.description}
+                    </p>
+                  </div>
                 </article>
               );
             })}
@@ -49,11 +80,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-white py-24">
-        <div className="container-shell grid gap-10 lg:grid-cols-2">
-          <article className="border-l-2 border-gold-300 pl-6">
-            <h2 className="font-display text-4xl">Why TPAP Was Created</h2>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+      {/* ── 2. STORY / CONTEXT GRID ── */}
+      <section className="border-t border-charcoal-100 bg-charcoal-50 py-20">
+        <div className="container-shell grid gap-px bg-charcoal-100 md:grid-cols-2">
+          <article className="bg-charcoal-50 p-8 md:p-10">
+            <div className="mb-5 h-px w-8 bg-gold-400" />
+            <h2 className="font-display text-2xl leading-tight text-charcoal-950 md:text-3xl">Why TPAP Was Created</h2>
+            <p className="mt-5 text-sm leading-[1.9] text-charcoal-600">
               Pakistan&apos;s tax debate has long been dominated by two voices: the
               government, which seeks more revenue, and international lenders, who
               advocate for higher taxes as a condition of financial assistance. The
@@ -62,7 +95,7 @@ export default function AboutPage() {
               2020 to give taxpayers an organised, research-backed, credible institution
               that could participate meaningfully in the national fiscal conversation.
             </p>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+            <p className="mt-4 text-sm leading-[1.9] text-charcoal-600">
               Millions of Pakistanis pay taxes regularly, run businesses responsibly,
               and contribute to the national economy under extremely difficult
               conditions: complex compliance requirements, arbitrary enforcement,
@@ -71,9 +104,11 @@ export default function AboutPage() {
               taxpayers deserved representation.
             </p>
           </article>
-          <article className="border-l-2 border-gold-300 pl-6">
-            <h2 className="font-display text-4xl">The Taxpayer-State Social Contract</h2>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+
+          <article className="bg-charcoal-50 p-8 md:p-10">
+            <div className="mb-5 h-px w-8 bg-gold-400" />
+            <h2 className="font-display text-2xl leading-tight text-charcoal-950 md:text-3xl">The Taxpayer-State Social Contract</h2>
+            <p className="mt-5 text-sm leading-[1.9] text-charcoal-600">
               Citizens are not merely subjects of taxation; they are stakeholders in
               governance. When a citizen pays taxes, they are investing in a system that
               must deliver public safety, functional infrastructure, quality public
@@ -82,9 +117,11 @@ export default function AboutPage() {
               both taxpayers and the state to their respective obligations.
             </p>
           </article>
-          <article className="border-l-2 border-gold-300 pl-6">
-            <h2 className="font-display text-4xl">Why Taxpayers Need Representation</h2>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+
+          <article className="bg-charcoal-50 p-8 md:p-10">
+            <div className="mb-5 h-px w-8 bg-gold-400" />
+            <h2 className="font-display text-2xl leading-tight text-charcoal-950 md:text-3xl">Why Taxpayers Need Representation</h2>
+            <p className="mt-5 text-sm leading-[1.9] text-charcoal-600">
               In every mature democracy, taxpayers are organised. In the United Kingdom,
               the TaxPayers&apos; Alliance has influenced policy for two decades. In the
               United States, the National Taxpayers Union has shaped legislation for
@@ -95,29 +132,37 @@ export default function AboutPage() {
               decisions that shape their lives.
             </p>
           </article>
-          <article className="border-l-2 border-gold-300 pl-6">
-            <h2 className="font-display text-4xl">Our Philosophy</h2>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+
+          <article className="bg-charcoal-50 p-8 md:p-10">
+            <div className="mb-5 h-px w-8 bg-gold-400" />
+            <h2 className="font-display text-2xl leading-tight text-charcoal-950 md:text-3xl">Our Philosophy</h2>
+            <p className="mt-5 text-sm leading-[1.9] text-charcoal-600">
               Taxation is a social contract, not a one-way extraction. Citizens who
               fulfil their obligations have a legitimate right to demand responsible
               spending, transparent governance, and genuine public value.
             </p>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+            <p className="mt-4 text-sm leading-[1.9] text-charcoal-600">
               Lower taxes, simpler compliance, broader tax bases, and accountable public
               spending are not opposing goals. They are complementary pillars of a
               thriving economy.
             </p>
           </article>
-          <article className="border-l-2 border-gold-300 pl-6">
-            <h2 className="font-display text-4xl">Vision</h2>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+
+          <article className="bg-charcoal-50 p-8 md:p-10">
+            <span className="inline-block border border-forest-200 bg-forest-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-forest-700">
+              Vision
+            </span>
+            <p className="mt-5 font-display text-2xl leading-snug text-charcoal-950 md:text-3xl">
               Resurrecting the contract between state and citizens through reforming
               taxes and government spending.
             </p>
           </article>
-          <article className="border-l-2 border-gold-300 pl-6">
-            <h2 className="font-display text-4xl">Mission</h2>
-            <p className="mt-5 text-sm leading-7 text-charcoal-600">
+
+          <article className="bg-charcoal-50 p-8 md:p-10">
+            <span className="inline-block border border-forest-200 bg-forest-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-forest-700">
+              Mission
+            </span>
+            <p className="mt-5 font-display text-2xl leading-snug text-charcoal-950 md:text-3xl">
               To create a potent pressure group that advises, educates, and influences
               public policy to lower taxes, simplify taxation, and eliminate undue and
               wasteful government expenditure.
@@ -126,71 +171,96 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-white py-24">
-        <div className="container-shell grid gap-12 lg:grid-cols-2">
+      {/* ── 3. IMPACT AREAS + FUTURE ROADMAP ── */}
+      <section className="border-t border-charcoal-100 bg-white py-20">
+        <div className="container-shell grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <SectionHeading eyebrow="Impact Areas" title="Where TPAP concentrates its work." />
-            <div className="mt-10 grid gap-3">
+            <ul className="mt-10 space-y-2">
               {impactAreas.map((item) => (
-                <div key={item} className="flex gap-4 border border-charcoal-100 p-5">
-                  <CheckCircle2 className="mt-1 shrink-0 text-forest-700" size={20} />
-                  <p className="text-sm leading-7 text-charcoal-700">{item}</p>
-                </div>
+                <li
+                  key={item}
+                  className="group flex items-start gap-4 border border-charcoal-100 bg-white px-5 py-4 transition-all duration-150 hover:border-forest-200 hover:shadow-[0_4px_16px_rgba(0,38,66,0.07)]"
+                >
+                  <CheckCircle2 className="mt-0.5 shrink-0 text-forest-600 transition-colors duration-150 group-hover:text-forest-700" size={17} strokeWidth={2} />
+                  <span className="text-sm leading-[1.8] text-charcoal-700">{item}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
           <div>
             <SectionHeading eyebrow="Future Roadmap" title="The next stage of taxpayer representation." />
-            <div className="mt-10 grid gap-3">
+            <ul className="mt-10 space-y-2">
               {futureRoadmap.map((item) => (
-                <div key={item} className="flex gap-4 border border-charcoal-100 p-5">
-                  <CheckCircle2 className="mt-1 shrink-0 text-gold-500" size={20} />
-                  <p className="text-sm leading-7 text-charcoal-700">{item}</p>
-                </div>
+                <li
+                  key={item}
+                  className="group flex items-start gap-4 border border-charcoal-100 bg-white px-5 py-4 transition-all duration-150 hover:border-gold-200 hover:shadow-[0_4px_16px_rgba(0,38,66,0.07)]"
+                >
+                  <CheckCircle2 className="mt-0.5 shrink-0 text-gold-500 transition-colors duration-150 group-hover:text-gold-600" size={17} strokeWidth={2} />
+                  <span className="text-sm leading-[1.8] text-charcoal-700">{item}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </section>
 
-      <section className="py-24">
+      {/* ── 4. OBJECTIVES ── */}
+      <section className="border-t border-charcoal-100 bg-charcoal-50 py-20">
         <div className="container-shell">
           <SectionHeading
             eyebrow="Objectives"
             title="A fairer, simpler, and more accountable fiscal system."
             align="center"
           />
-          <div className="mx-auto mt-12 grid max-w-4xl gap-4">
+          <ul className="mx-auto mt-12 max-w-3xl space-y-2">
             {objectives.map((objective) => (
-              <div key={objective} className="flex gap-4 bg-white p-5 shadow-soft">
-                <CheckCircle2 className="mt-1 shrink-0 text-forest-700" size={21} />
-                <p className="text-sm leading-7 text-charcoal-600">{objective}</p>
-              </div>
+              <li
+                key={objective}
+                className="group flex items-start gap-4 border border-charcoal-100 bg-white px-6 py-4 transition-all duration-150 hover:-translate-y-px hover:border-forest-200 hover:shadow-[0_6px_24px_rgba(0,38,66,0.08)]"
+              >
+                <CheckCircle2
+                  className="mt-0.5 shrink-0 text-forest-600 transition-colors duration-150 group-hover:text-forest-700"
+                  size={18}
+                  strokeWidth={2}
+                />
+                <span className="text-sm leading-[1.85] text-charcoal-600">{objective}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      <section className="bg-forest-950 py-24 text-white">
+      {/* ── 5. STRATEGIC PRIORITIES ── */}
+      <section className="bg-forest-950 py-20 text-white">
         <div className="container-shell">
           <SectionHeading
             eyebrow="Strategic Priorities"
             title="How TPAP turns taxpayer concerns into public influence."
             light
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {strategicPriorities.map((priority) => (
-              <article key={priority.title} className="border border-white/10 bg-white/[0.05] p-6">
-                <h3 className="font-display text-3xl text-gold-200">{priority.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-white/68">{priority.description}</p>
+              <article
+                key={priority.title}
+                className="flex flex-col border border-white/10 bg-white/[0.04] p-6 transition-all duration-200 hover:border-white/20 hover:bg-white/[0.08]"
+              >
+                <h3 className="font-display text-2xl leading-snug text-gold-200">{priority.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-[1.85] text-white/60">{priority.description}</p>
               </article>
             ))}
           </div>
           <p className="mt-12 text-center text-sm leading-7 text-white/70">
-            Ready to take part? <Link className="font-bold text-gold-200" href="/membership">Become a member</Link>, learn about our <Link className="font-bold text-gold-200" href="/policy-advocacy">policy advocacy</Link>, or <Link className="font-bold text-gold-200" href="/complaints">submit a complaint</Link>.
+            Ready to take part?{" "}
+            <Link className="font-bold text-gold-200" href="/membership">Become a member</Link>,{" "}
+            learn about our{" "}
+            <Link className="font-bold text-gold-200" href="/policy-advocacy">policy advocacy</Link>,{" "}
+            or{" "}
+            <Link className="font-bold text-gold-200" href="/complaints">submit a complaint</Link>.
           </p>
         </div>
       </section>
+
     </PageShell>
   );
 }
