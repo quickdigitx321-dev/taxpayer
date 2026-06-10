@@ -263,6 +263,23 @@ export default function Home() {
               <h2 className="mt-5 font-display text-4xl leading-[1.06] text-charcoal-950 md:text-5xl lg:text-[3.25rem]">
                 Representation, research, support, and public accountability.
               </h2>
+              <p className="mt-6 text-base leading-8 text-charcoal-600">
+                TPAP gives taxpayers a structured platform to organise, raise concerns, access support, and participate in evidence-based fiscal reform.
+              </p>
+              <div className="mt-8 grid gap-3">
+                {(
+                  [
+                    { label: "Evidence-based representation", Icon: ShieldCheck },
+                    { label: "Taxpayer support and complaint guidance", Icon: MessageSquareText },
+                    { label: "Public accountability and reform advocacy", Icon: Landmark },
+                  ] as const
+                ).map(({ label, Icon }) => (
+                  <div key={label} className="flex items-center gap-3 text-sm text-charcoal-700">
+                    <Icon size={16} className="shrink-0 text-forest-600" strokeWidth={1.8} />
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
               <div className="mt-8 flex items-center gap-3" aria-hidden="true">
                 <span className="h-1 w-16 bg-forest-500" />
                 <span className="h-1 w-5 bg-gold-300" />
@@ -408,6 +425,21 @@ export default function Home() {
                 taxes, simplify the taxation regime, and eliminate undue and
                 wasteful government expenditure.
               </p>
+              <div className="mt-8 grid gap-3 border-t border-white/10 pt-8">
+                {[
+                  ["Lower taxes, simpler compliance", "Reducing the burden on honest taxpayers is our primary mandate."],
+                  ["Accountability over extraction", "Public revenue must be raised fairly and spent with full transparency."],
+                  ["Organised taxpayer voice", "Unorganised taxpayers cannot shape the policies that govern their lives."],
+                ].map(([title, desc]) => (
+                  <div key={title} className="flex gap-3">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-gold-300" aria-hidden="true" />
+                    <div>
+                      <p className="text-sm font-semibold text-white/85">{title}</p>
+                      <p className="mt-0.5 text-xs leading-5 text-white/50">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="grid gap-4">
@@ -431,33 +463,35 @@ export default function Home() {
 
       <MotionSection className="bg-[#f6f9fc] py-16 md:py-20 lg:py-24">
         <div className="container-shell">
-          <div className="grid gap-8 border-b border-forest-100 pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:pb-12">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-forest-500" aria-hidden="true" />
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-forest-600">
-                  Member Benefits
-                </p>
+          <div className="border-b border-forest-100 pb-10 md:pb-12">
+            <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-10">
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="h-px w-10 bg-forest-500" aria-hidden="true" />
+                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-forest-600">
+                    Member Benefits
+                  </p>
+                </div>
+                <h2 className="mt-5 font-display text-4xl leading-[1.06] text-charcoal-950 md:text-5xl lg:text-[3.25rem]">
+                  Your voice becomes stronger when taxpayers organise.
+                </h2>
               </div>
-              <h2 className="mt-5 max-w-2xl font-display text-4xl leading-[1.06] text-charcoal-950 md:text-5xl lg:text-[3.25rem]">
-                Your voice becomes stronger when taxpayers organise.
-              </h2>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-charcoal-600">
-                TPAP membership connects taxpayers with research,
-                representation, support, and meaningful participation in
-                reform.
-              </p>
+              <Link
+                href="/membership"
+                className="group mt-1 inline-flex w-fit shrink-0 items-center justify-center gap-3 self-start rounded-full bg-forest-700 px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-forest-800 hover:shadow-premium md:mt-14"
+              >
+                Explore membership
+                <ArrowRight
+                  size={17}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
             </div>
-            <Link
-              href="/membership"
-              className="group inline-flex w-fit items-center justify-center gap-3 rounded-full bg-forest-700 px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-forest-800 hover:shadow-premium"
-            >
-              Explore membership
-              <ArrowRight
-                size={17}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-charcoal-600">
+              TPAP membership connects taxpayers with research,
+              representation, support, and meaningful participation in
+              reform.
+            </p>
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -532,24 +566,24 @@ export default function Home() {
             <div className="grid gap-4 sm:grid-cols-2">
               <Link
                 href="/membership"
-                className="group relative flex h-full flex-col overflow-hidden bg-gold-300 p-6 text-charcoal-950 transition duration-300 hover:-translate-y-1 hover:bg-gold-200 hover:shadow-[0_20px_50px_rgba(214,176,82,0.2)] md:p-7"
+                className="group relative flex h-full flex-col border border-white/15 bg-white/[0.06] p-6 transition duration-300 hover:-translate-y-1 hover:border-gold-300/55 hover:bg-white/[0.09] hover:shadow-[0_20px_50px_rgba(0,0,0,0.22)] md:p-7"
               >
                 <div className="flex items-start justify-between gap-5">
-                  <span className="grid size-12 place-items-center border border-charcoal-950/10 bg-white/35">
+                  <span className="grid size-12 place-items-center border border-gold-300/25 bg-gold-300/10 text-gold-200">
                     <ShieldCheck size={24} strokeWidth={1.8} />
                   </span>
                   <ArrowRight
                     size={19}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
+                    className="text-gold-200 transition-transform duration-300 group-hover:translate-x-1"
                   />
                 </div>
-                <h3 className="mt-7 font-display text-3xl leading-tight">
+                <h3 className="mt-7 font-display text-3xl leading-tight text-white">
                   Become a Member
                 </h3>
-                <p className="mt-3 flex-1 text-sm leading-7 text-charcoal-700">
+                <p className="mt-3 flex-1 text-sm leading-7 text-white/62">
                   Join Pakistan&apos;s taxpayer advocacy movement.
                 </p>
-                <span className="mt-6 border-t border-charcoal-950/15 pt-4 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <span className="mt-6 border-t border-white/12 pt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gold-200">
                   Start your application
                 </span>
               </Link>
@@ -586,49 +620,48 @@ export default function Home() {
             <span className="h-px flex-1 bg-white/12" />
           </div>
 
-          <div className="grid gap-9 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12">
-            <div>
-              <h2 className="max-w-3xl font-display text-4xl leading-[1.08] text-white md:text-5xl">
+          <div>
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+              <h2 className="font-display text-4xl leading-[1.08] text-white md:text-5xl lg:max-w-2xl">
                 Join Pakistan&apos;s Most Credible Taxpayer Alliance.
               </h2>
-              <div className="mt-7 grid gap-3 text-sm text-white/70 md:grid-cols-3">
-                {[
-                  "Free individual membership",
-                  "Business and corporate tiers available",
-                  "Policy participation from day one"
-                ].map((benefit) => (
-                  <div
-                    key={benefit}
-                    className="flex items-center gap-3 border border-white/10 bg-white/[0.045] px-4 py-3.5"
-                  >
-                    <CheckCircle2
-                      size={17}
-                      className="shrink-0 text-gold-200"
-                      strokeWidth={1.8}
-                    />
-                    <p className="leading-6">{benefit}</p>
-                  </div>
-                ))}
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
+                <Link
+                  href="/membership"
+                  className="group inline-flex items-center justify-center gap-3 rounded-full bg-gold-300 px-7 py-4 text-sm font-bold text-charcoal-950 transition duration-300 hover:-translate-y-0.5 hover:bg-gold-200 hover:shadow-[0_14px_36px_rgba(214,176,82,0.2)]"
+                >
+                  Join TPAP Today
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-4 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:border-gold-300/60 hover:bg-white/[0.07]"
+                >
+                  Contact Us
+                </Link>
               </div>
             </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-              <Link
-                href="/membership"
-                className="group inline-flex items-center justify-center gap-3 rounded-full bg-gold-300 px-7 py-4 text-sm font-bold text-charcoal-950 transition duration-300 hover:-translate-y-0.5 hover:bg-gold-200 hover:shadow-[0_14px_36px_rgba(214,176,82,0.2)]"
-              >
-                Join TPAP Today
-                <ArrowRight
-                  size={17}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-4 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:border-gold-300/60 hover:bg-white/[0.07]"
-              >
-                Contact Us
-              </Link>
+            <div className="mt-7 grid gap-3 text-sm text-white/70 md:grid-cols-3">
+              {[
+                "Free individual membership",
+                "Business and corporate tiers available",
+                "Policy participation from day one"
+              ].map((benefit) => (
+                <div
+                  key={benefit}
+                  className="flex items-center gap-3 border border-white/10 bg-white/[0.045] px-4 py-3.5"
+                >
+                  <CheckCircle2
+                    size={17}
+                    className="shrink-0 text-gold-200"
+                    strokeWidth={1.8}
+                  />
+                  <p className="leading-6">{benefit}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -182,8 +182,7 @@ export const memberBenefits = [
   "Access to exclusive tax reform research and reports",
   "Network with business leaders, economists, and policy professionals",
   "Receive early alerts on tax law changes, SRO updates, and budget developments",
-  "Get support navigating taxpayer complaints and FBR grievances",
-  "Participate in shaping TPAP's policy positions and advocacy agenda"
+  "Get support navigating taxpayer complaints and FBR grievances"
 ];
 
 export const homeMemberBenefits = [
@@ -321,11 +320,7 @@ export const complaintCategories = [
     description:
       "Any instance where a tax official requests or demands informal payments in exchange for fair treatment, processing, or compliance clearance."
   },
-  {
-    title: "Policy Grievances",
-    description:
-      "Concerns about specific tax laws, regulations, or SROs that you believe are unjust, impractical, or economically harmful."
-  }
+
 ];
 
 export const complaintAssistance = [

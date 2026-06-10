@@ -342,15 +342,12 @@ export default function PressReleasesPage() {
             </div>
             <div className="mt-6 shrink-0 lg:mt-0">
               <a
-                href="mailto:sumaira@primeinstitute.org"
+                href="mailto:media@taxpayersalliancepakistan.com"
                 className="inline-flex items-center gap-2.5 border border-forest-700 bg-forest-700 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-forest-800"
               >
                 <Mail size={16} />
-                sumaira@primeinstitute.org
+                media@taxpayersalliancepakistan.com
               </a>
-              <p className="mt-2 text-xs text-charcoal-400">
-                Sumaira Waseem — Communications Officer, PRIME
-              </p>
             </div>
           </div>
         </div>

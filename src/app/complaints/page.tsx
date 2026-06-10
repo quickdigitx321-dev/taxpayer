@@ -83,18 +83,29 @@ export default function ComplaintsPage() {
       {/* How TPAP Can Help */}
       <section className="bg-white py-24">
         <div className="container-shell">
-          <SectionHeading
-            eyebrow="How TPAP Can Help"
-            title="Support for individual concerns and wider reform."
-            description="Complaints help TPAP recognise patterns, guide taxpayers towards available remedies, and build evidence for policy advocacy."
-          />
-          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-forest-600">
+            How TPAP Can Help
+          </p>
+          <div className="mt-4 flex items-center gap-3">
+            <span className="h-px w-8 bg-gold-400" />
+            <span className="h-px w-16 bg-charcoal-100" />
+          </div>
+          <div className="mt-6">
+            <h2 className="max-w-5xl font-display text-4xl leading-tight text-charcoal-950 md:text-[2.6rem]">
+              Support for individual concerns and wider reform.
+            </h2>
+            <p className="mt-5 max-w-3xl text-[0.9375rem] leading-[1.85] text-charcoal-600">
+              Complaints help TPAP recognise patterns, guide taxpayers towards available remedies, and build evidence for policy advocacy.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {complaintCategories.map((category, i) => {
               const Icon = categoryIcons[i] ?? ShieldCheck;
+              const isLast = i === complaintCategories.length - 1;
               return (
                 <article
                   key={category.title}
-                  className="group relative flex flex-col border border-charcoal-100 bg-charcoal-50/40 p-6 transition-all duration-200 hover:-translate-y-px hover:border-forest-200 hover:bg-white hover:shadow-[0_8px_32px_rgba(0,38,66,0.10)]"
+                  className={`group relative flex flex-col border border-charcoal-100 bg-charcoal-50/40 p-6 transition-all duration-200 hover:-translate-y-px hover:border-forest-200 hover:bg-white hover:shadow-[0_8px_32px_rgba(0,38,66,0.10)]${isLast ? " md:col-span-2 lg:col-span-1" : ""}`}
                 >
                   <span className="absolute inset-x-0 top-0 h-[2px] bg-transparent transition-colors duration-200 group-hover:bg-forest-500" />
                   <div className="mb-4 flex h-10 w-10 items-center justify-center bg-forest-50 text-forest-700 ring-1 ring-forest-100 transition-all duration-200 group-hover:bg-forest-100 group-hover:ring-forest-300">

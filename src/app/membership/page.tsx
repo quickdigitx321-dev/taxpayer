@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CheckCircle2, User, Briefcase, GraduationCap, Building2 } from "lucide-react";
 import { MembershipForm } from "@/components/forms/MembershipForm";
 import { PageShell } from "@/components/PageShell";
-import { SectionHeading } from "@/components/SectionHeading";
 import { memberBenefits, membershipCategories, membershipEligibility } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -55,13 +54,18 @@ export default function MembershipPage() {
       {/* ── Why Join ── */}
       <section className="py-24">
         <div className="container-shell">
-          <SectionHeading
-            eyebrow="Why Join TPAP"
-            title="Turn individual concerns into a collective national voice."
-            description="TPAP brings citizens, professionals, businesses, students, and institutions together to participate meaningfully in Pakistan's tax and fiscal policy dialogue."
-          />
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-forest-700">Why Join TPAP</p>
+            <div className="mb-5 h-px w-10 bg-gold-400" />
+<h2 className="font-display max-w-6xl text-4xl leading-[1.08] text-charcoal-950 md:text-5xl lg:text-[52px]">
+  Turn individual concerns into&nbsp;a collective national voice.
+</h2>
+<p className="mt-6 max-w-4xl text-base leading-8 text-charcoal-600">
+  TPAP brings citizens, professionals, businesses, students, and institutions together to participate meaningfully in Pakistan&apos;s tax and fiscal policy dialogue.
+</p>
+          </div>
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {memberBenefits.map((benefit, i) => (
+            {memberBenefits.map((benefit) => (
               <article
                 key={benefit}
                 className="group relative flex items-start gap-4 border border-charcoal-100 bg-white px-5 py-5 transition-all duration-200 hover:-translate-y-px hover:border-forest-200 hover:shadow-[0_8px_32px_rgba(0,38,66,0.09)]"
@@ -80,11 +84,16 @@ export default function MembershipPage() {
       {/* ── Membership Categories ── */}
       <section className="bg-white py-24">
         <div className="container-shell">
-          <SectionHeading
-            eyebrow="Membership Categories"
-            title="A place for every taxpayer and reform-minded citizen."
-            description="Eligible applicants include Pakistani citizens and non-resident Pakistanis, businesses, students, professionals, and anyone who supports TPAP's mission."
-          />
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-forest-700">Membership Categories</p>
+            <div className="mb-5 h-px w-10 bg-gold-400" />
+            <h2 className="font-display max-w-6xl text-4xl leading-[1.08] text-charcoal-950 md:text-5xl lg:text-[52px]">
+              A place for every taxpayer and reform-minded citizen.
+            </h2>
+            <p className="mt-6 max-w-4xl text-base leading-8 text-charcoal-600">
+              Eligible applicants include Pakistani citizens and non-resident Pakistanis, businesses, students, professionals, and anyone who supports TPAP&apos;s mission.
+            </p>
+          </div>
           <div className="mt-12 grid gap-5 md:grid-cols-2">
             {membershipCategories.map((category, i) => {
               const Icon = categoryIcons[i];
@@ -126,23 +135,18 @@ export default function MembershipPage() {
 
       {/* ── Eligibility ── */}
       <section className="py-24">
-        <div className="container-shell grid items-start gap-16 lg:grid-cols-[1fr_1.2fr]">
+        <div className="container-shell">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-forest-600">
-              Membership Eligibility
-            </p>
-            <div className="mt-4 flex items-center gap-3">
-              <span className="h-px w-8 bg-gold-400" />
-              <span className="h-px flex-1 bg-charcoal-100" />
-            </div>
-            <h2 className="mt-6 font-display text-4xl leading-[1.15] text-charcoal-950 md:text-[2.5rem]">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-forest-700">Membership Eligibility</p>
+            <div className="mb-5 h-px w-10 bg-gold-400" />
+            <h2 className="font-display max-w-6xl text-4xl leading-[1.08] text-charcoal-950 md:text-5xl lg:text-[52px]">
               TPAP is open to Pakistanis from every walk of life.
             </h2>
-            <p className="mt-5 text-[0.9375rem] leading-[1.85] text-charcoal-600">
+            <p className="mt-6 max-w-4xl text-base leading-8 text-charcoal-600">
               If you pay taxes, support fair taxation, or believe in transparent governance, TPAP is your platform.
             </p>
           </div>
-          <div className="grid gap-3">
+          <div className="mt-12 grid gap-3 md:grid-cols-2">
             {membershipEligibility.map((item) => (
               <div
                 key={item}
@@ -158,24 +162,62 @@ export default function MembershipPage() {
       </section>
 
       {/* ── Application ── */}
-      <section className="bg-white py-24">
-        <div className="container-shell grid items-start gap-16 lg:grid-cols-[1fr_1.4fr]">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-forest-600">
-              Membership Application
-            </p>
-            <div className="mt-4 flex items-center gap-3">
-              <span className="h-px w-8 bg-gold-400" />
-              <span className="h-px flex-1 bg-charcoal-100" />
-            </div>
-            <h2 className="mt-6 font-display text-4xl leading-[1.15] text-charcoal-950 md:text-[2.5rem]">
+      <section className="bg-[#f7f8fa] py-24">
+        <div className="container-shell">
+          {/* Intro */}
+          <div className="mb-12">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-forest-700">Membership Application</p>
+            <div className="mb-5 h-px w-10 bg-gold-400" />
+            <h2 className="font-display max-w-3xl text-4xl leading-[1.08] text-charcoal-950 md:text-5xl">
               Add your voice to the alliance.
             </h2>
-            <p className="mt-5 text-[0.9375rem] leading-[1.85] text-charcoal-600">
+            <p className="mt-5 max-w-2xl text-base leading-8 text-charcoal-600">
               Provide accurate identity, organisation, and contact details. The TPAP team will review your application and contact you regarding its status.
             </p>
           </div>
-          <MembershipForm />
+
+          {/* Two-column layout */}
+          <div className="grid items-start gap-8 lg:grid-cols-[340px_1fr]">
+
+            {/* Left: Before you apply panel */}
+            <aside className="border border-charcoal-100 bg-white p-7 shadow-sm">
+              <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-charcoal-500">Before You Apply</p>
+              <ul className="grid gap-4">
+                {[
+                  {
+                    title: "Strict Confidentiality",
+                    body: "Your personal and financial information is kept strictly confidential and used only for membership processing.",
+                  },
+                  {
+                    title: "Application Review",
+                    body: "All applications are individually reviewed by the TPAP team to ensure eligibility and accuracy.",
+                  },
+                  {
+                    title: "Status Notification",
+                    body: "You will be contacted by the TPAP team with a decision regarding your membership status.",
+                  },
+                ].map((note) => (
+                  <li key={note.title} className="flex gap-4">
+                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center border border-forest-100 bg-forest-50">
+                      <CheckCircle2 className="text-forest-700" size={15} strokeWidth={2} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-charcoal-900">{note.title}</p>
+                      <p className="mt-1 text-xs leading-[1.75] text-charcoal-500">{note.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 border-t border-charcoal-100 pt-6">
+                <p className="text-xs leading-[1.75] text-charcoal-400">
+                  TPAP membership is voluntary and open to all Pakistani citizens, residents, and organisations that support taxpayer rights and fiscal accountability.
+                </p>
+              </div>
+            </aside>
+
+            {/* Right: Form */}
+            <MembershipForm />
+          </div>
         </div>
       </section>
 

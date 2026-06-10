@@ -135,7 +135,7 @@ export function MembershipForm() {
     <form
       noValidate
       onSubmit={handleSubmit}
-      className="grid gap-5 border border-charcoal-100 bg-white p-8 shadow-[0_16px_56px_rgba(0,38,66,0.09)] md:grid-cols-2"
+      className="grid gap-6 border border-charcoal-100 bg-white p-8 shadow-[0_4px_24px_rgba(0,38,66,0.08)] md:grid-cols-2 lg:p-10"
     >
       <input
         aria-hidden="true"
@@ -151,18 +151,18 @@ export function MembershipForm() {
       {fields.map((field) => (
         <label
           key={field.name}
-          className={`grid gap-1.5 ${field.wide ? "md:col-span-2" : ""}`}
+          className={`grid gap-2 ${field.wide ? "md:col-span-2" : ""}`}
         >
-          <span className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal-700">
+          <span className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-charcoal-600">
             {field.label}
           </span>
           <input
             autoComplete={field.autoComplete}
             aria-invalid={Boolean(fieldErrors[field.name])}
-            className={`border px-4 py-3 text-sm text-charcoal-900 outline-none transition-colors duration-150 placeholder:text-charcoal-300 focus:border-forest-600 focus:ring-2 focus:ring-forest-100 ${
+            className={`border px-4 py-3 text-sm text-charcoal-900 outline-none transition-all duration-150 placeholder:text-charcoal-300 focus:border-forest-600 focus:ring-2 focus:ring-forest-100 ${
               fieldErrors[field.name]
                 ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-50"
-                : "border-charcoal-200 bg-white hover:border-charcoal-300"
+                : "border-charcoal-200 bg-white hover:border-charcoal-400"
             }`}
             name={field.name}
             onChange={(event) => {
@@ -190,13 +190,15 @@ export function MembershipForm() {
       ))}
       <div className="md:col-span-2">
         <button
-          className="w-full bg-forest-800 px-6 py-3.5 text-sm font-bold tracking-wide text-white transition-colors duration-150 hover:bg-forest-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full border border-forest-900 bg-forest-900 px-6 py-4 text-sm font-bold tracking-widest text-white transition-all duration-150 hover:bg-forest-800 hover:shadow-[0_4px_16px_rgba(0,38,66,0.18)] disabled:cursor-not-allowed disabled:opacity-60"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting…" : "Submit Application →"}
         </button>
-        <p className="mt-3 text-center text-xs text-charcoal-400">
-          Your information is kept confidential and will only be used for membership processing.
+        <p className="mt-4 flex items-center justify-center gap-2 text-xs text-charcoal-400">
+          <span className="h-px w-8 bg-charcoal-200" />
+          Your information is kept confidential and used only for membership processing.
+          <span className="h-px w-8 bg-charcoal-200" />
         </p>
       </div>
     </form>
