@@ -18,6 +18,7 @@ export type ServerBlog = {
   created_at: string;
   updated_at: string;
   author: string;
+  readTime?: string | null;
 };
 
 export type ServerLeadershipProfile = {
