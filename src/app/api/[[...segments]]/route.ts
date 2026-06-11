@@ -156,10 +156,7 @@ async function publicHealth() {
   }
 
   try {
-    await pool.query({
-      sql: "SELECT 1",
-      timeout: Number(process.env.DB_HEALTH_TIMEOUT_MS || 1500)
-    });
+    await pool.query("SELECT 1");
     return json({ ok: true, service: "tpap-api", database: "connected" });
   } catch (error) {
     return json(
