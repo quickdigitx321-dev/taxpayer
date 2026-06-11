@@ -185,7 +185,7 @@ export function updateComplaintStatus(
   status: ComplaintRecord["status"],
   adminNotes = ""
 ) {
-  return request<{ message: string }>(`/admin/complaints/${id}/status`, {
+  return request<{ message: string; customerNotificationSent: boolean }>(`/admin/complaints/${id}/status`, {
     method: "PATCH",
     token,
     body: JSON.stringify({ status, adminNotes })
