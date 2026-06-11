@@ -28,7 +28,7 @@ export const navItems = [
 export const siteStats = [
   { value: "5M+", label: "Registered taxpayers largely unrepresented in policy dialogue" },
   { value: "50+", label: "Withholding tax categories burdening Pakistani businesses" },
-  { value: "Bottom 5", label: "Pakistan ranks among the lowest tax-to-GDP ratios in Asia" },
+  { value: "Tax Gap", label: "Pakistan ranks among the lowest tax-to-GDP ratios in Asia" },
   { value: "2020", label: "Year TPAP was founded to change this reality" }
 ];
 
