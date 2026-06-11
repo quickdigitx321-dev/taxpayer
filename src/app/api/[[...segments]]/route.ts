@@ -10,6 +10,7 @@ const {
   sendMembershipNotifications,
   sendMembershipStatusNotification,
   sendComplaintNotifications,
+  sendComplaintStatusNotification,
   sendContactNotifications
 } = require("../../../../server/services/notifications");
 const {
@@ -674,6 +675,18 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         adminNotes: z.string().trim().max(2000).optional().nullable()
       });
       const data = schema.parse(await bodyJson(request));
+      const [complaintRows] = await pool.execute(
+        `SELECT id, full_name, email, subject, status
+         FROM complaints
+         WHERE id = ?
+         LIMIT 1`,
+        [third]
+      );
+      const complaint = complaintRows[0];
+
+      if (!complaint) {
+        return json({ message: "Complaint not found." }, 404);
+      }
 
       await pool.execute("UPDATE complaints SET status = ?, admin_notes = ? WHERE id = ?", [
         data.status,
@@ -681,7 +694,19 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         third
       ]);
 
-      return json({ message: "Complaint updated successfully." });
+      const notification =
+        complaint.status !== data.status
+          ? await sendComplaintStatusNotification(
+              complaint,
+              data.status,
+              data.adminNotes || ""
+            )
+          : { sent: false, skipped: true };
+
+      return json({
+        message: "Complaint updated successfully.",
+        customerNotificationSent: Boolean(notification.sent)
+      });
     }
 
     if (second === "contact-inquiries" && third) {

@@ -362,9 +362,20 @@ export function AdminDashboard() {
     setNotice("");
 
     try {
-      await updateComplaintStatus(token, id, status, `Marked ${status} from dashboard.`);
+      const response = await updateComplaintStatus(
+        token,
+        id,
+        status,
+        `Marked ${status} from dashboard.`
+      );
       await loadData();
-      setNotice(`Complaint marked ${status.replace("_", " ")}.`);
+      setNotice(
+        `Complaint marked ${status.replace("_", " ")}.${
+          response.customerNotificationSent
+            ? " The customer was notified by email."
+            : " No customer email was sent because the status was unchanged or SMTP delivery was not accepted."
+        }`
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not update complaint.");
     } finally {
