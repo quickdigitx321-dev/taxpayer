@@ -2,6 +2,7 @@ import "server-only";
 import { blogs as fallbackBlogs, leaders as fallbackLeaders } from "@/data/site";
 
 const { pool } = require("../../server/config/db");
+const publicQueryTimeout = Number(process.env.DB_PUBLIC_QUERY_TIMEOUT_MS || 1500);
 
 export type ServerBlog = {
   id: number;
@@ -51,14 +52,34 @@ function fallbackServerBlogs(): ServerBlog[] {
   }));
 }
 
+async function publicQuery(query: Promise<any>): Promise<any> {
+  let timeout: ReturnType<typeof setTimeout>;
+
+  try {
+    return await Promise.race([
+      query,
+      new Promise<never>((_, reject) => {
+        timeout = setTimeout(
+          () => reject(new Error("Public database query timed out.")),
+          publicQueryTimeout
+        );
+      })
+    ]);
+  } finally {
+    clearTimeout(timeout!);
+  }
+}
+
 export async function getServerBlogs(): Promise<ServerBlog[]> {
   try {
-    const [rows] = await pool.execute(
-      `SELECT id, title, slug, excerpt, content, category, featured_image, seo_title,
-        seo_description, status, published_at, created_at, updated_at
-       FROM blogs
-       WHERE status = 'published'
-       ORDER BY COALESCE(published_at, created_at) DESC`
+    const [rows] = await publicQuery(
+      pool.execute(
+        `SELECT id, title, slug, excerpt, content, category, featured_image, seo_title,
+          seo_description, status, published_at, created_at, updated_at
+         FROM blogs
+         WHERE status = 'published'
+         ORDER BY COALESCE(published_at, created_at) DESC`
+      )
     );
 
     return rows.map((blog: Omit<ServerBlog, "author">) => ({
@@ -72,13 +93,15 @@ export async function getServerBlogs(): Promise<ServerBlog[]> {
 
 export async function getServerBlog(slug: string): Promise<ServerBlog | null> {
   try {
-    const [rows] = await pool.execute(
-      `SELECT id, title, slug, excerpt, content, category, featured_image, seo_title,
-        seo_description, status, published_at, created_at, updated_at
-       FROM blogs
-       WHERE slug = ? AND status = 'published'
-       LIMIT 1`,
-      [slug]
+    const [rows] = await publicQuery(
+      pool.execute(
+        `SELECT id, title, slug, excerpt, content, category, featured_image, seo_title,
+          seo_description, status, published_at, created_at, updated_at
+         FROM blogs
+         WHERE slug = ? AND status = 'published'
+         LIMIT 1`,
+        [slug]
+      )
     );
 
     if (!rows[0]) {
@@ -93,10 +116,12 @@ export async function getServerBlog(slug: string): Promise<ServerBlog | null> {
 
 export async function getServerLeadershipProfiles(): Promise<ServerLeadershipProfile[]> {
   try {
-    const [rows] = await pool.execute(
-      `SELECT id, name, designation, bio, image_url, profile_type, sort_order, created_at
-       FROM leadership_profiles
-       ORDER BY profile_type ASC, sort_order ASC, created_at DESC`
+    const [rows] = await publicQuery(
+      pool.execute(
+        `SELECT id, name, designation, bio, image_url, profile_type, sort_order, created_at
+         FROM leadership_profiles
+         ORDER BY profile_type ASC, sort_order ASC, created_at DESC`
+      )
     );
 
     if (rows.length > 0) {
