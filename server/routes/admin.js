@@ -6,10 +6,7 @@ const { pool } = require("../config/db");
 const { requireAdmin } = require("../middleware/auth");
 const { imageUpload } = require("../middleware/upload");
 const { defaultSettings, getSettings, updateSettings } = require("../services/settings");
-const {
-  sendComplaintStatusNotification,
-  sendMembershipStatusNotification
-} = require("../services/notifications");
+const { sendMembershipStatusNotification } = require("../services/notifications");
 const { asyncHandler } = require("../utils/asyncHandler");
 
 const router = express.Router();
@@ -264,18 +261,6 @@ router.patch(
       adminNotes: z.string().trim().max(2000).optional().nullable()
     });
     const data = schema.parse(req.body);
-    const [complaintRows] = await pool.execute(
-      `SELECT id, full_name, email, subject, status
-       FROM complaints
-       WHERE id = ?
-       LIMIT 1`,
-      [req.params.id]
-    );
-    const complaint = complaintRows[0];
-
-    if (!complaint) {
-      return res.status(404).json({ message: "Complaint not found." });
-    }
 
     await pool.execute("UPDATE complaints SET status = ?, admin_notes = ? WHERE id = ?", [
       data.status,
@@ -283,19 +268,7 @@ router.patch(
       req.params.id
     ]);
 
-    const notification =
-      complaint.status !== data.status
-        ? await sendComplaintStatusNotification(
-            complaint,
-            data.status,
-            data.adminNotes || ""
-          )
-        : { sent: false, skipped: true };
-
-    return res.json({
-      message: "Complaint updated successfully.",
-      customerNotificationSent: Boolean(notification.sent)
-    });
+    return res.json({ message: "Complaint updated successfully." });
   })
 );
 

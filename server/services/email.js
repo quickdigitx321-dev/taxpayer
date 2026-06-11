@@ -37,7 +37,7 @@ async function sendMail({ to, subject, text, html }) {
   try {
     const info = await transporter.sendMail({
       from: process.env.SMTP_FROM,
-      replyTo: process.env.SMTP_REPLY_TO || process.env.SMTP_USER,
+      replyTo: process.env.ADMIN_NOTIFICATION_EMAIL || process.env.SMTP_USER,
       to,
       subject,
       text,

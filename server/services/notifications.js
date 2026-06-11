@@ -1,39 +1,7 @@
 const { sendMail } = require("./email");
 
 const siteName = "Tax Payer Alliance Pakistan";
-const adminEmail = () =>
-  process.env.ADMIN_NOTIFICATION_EMAIL || process.env.ADMIN_EMAIL;
-const siteUrl = () =>
-  (process.env.NEXT_PUBLIC_SITE_URL || process.env.FRONTEND_URL || "https://taxpayersalliancepakistan.com").replace(
-    /\/$/,
-    ""
-  );
-const automaticNotice = "***This is an automatic email, please do not reply.";
-
-function customerText(content) {
-  return `${content}\n\nRegards,\nTax Payer Alliance Pakistan\n\n${automaticNotice}`;
-}
-
-function customerEmail(body) {
-  return `
-    <div style="font-family: Arial, sans-serif; color: #1b1b1b; line-height: 1.7; max-width: 620px;">
-      <img
-        src="${siteUrl()}/brand/tpap-logo-blue.png"
-        alt="${siteName}"
-        width="180"
-        style="display: block; width: 180px; max-width: 100%; height: auto; margin-bottom: 28px;"
-      />
-      ${body}
-      <p style="margin-top: 28px;">
-        Regards,<br />
-        <strong>${siteName}</strong>
-      </p>
-      <p style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px;">
-        <strong>${automaticNotice}</strong>
-      </p>
-    </div>
-  `;
-}
+const adminEmail = () => process.env.ADMIN_NOTIFICATION_EMAIL;
 
 function shell(title, body) {
   return `
@@ -77,10 +45,9 @@ async function sendMembershipNotifications(data, id) {
   const customer = await sendMail({
     to: data.email,
     subject: `TPAP membership application received - ${reference}`,
-    text: customerText(
-      `Thank you for applying for TPAP membership. Your application has been received and is under review. Reference: ${reference}.`
-    ),
-    html: customerEmail(
+    text: `Thank you for applying for TPAP membership. Your application has been received and is under review. Reference: ${reference}.`,
+    html: shell(
+      "Your membership application has been received",
       `
         <p>Dear ${data.firstName},</p>
         <p>Thank you for applying for membership with Tax Payer Alliance Pakistan. Your application has been received successfully and is now under review by the TPAP team.</p>
@@ -139,13 +106,11 @@ async function sendMembershipStatusNotification(application, status, membershipI
   return sendMail({
     to: application.email,
     subject: `${title} - ${applicationReference}`,
-    text: customerText(
-      `${summary} ${nextStep}${adminNotes ? ` Admin note: ${adminNotes}` : ""}`
-    ),
-    html: customerEmail(
+    text: `${summary} ${nextStep}${adminNotes ? ` Admin note: ${adminNotes}` : ""}`,
+    html: shell(
+      title,
       `
         <p>Dear ${applicantName || "Applicant"},</p>
-        <h2 style="margin: 0 0 14px; font-size: 22px;">${title}</h2>
         <p>${summary}</p>
         ${rows([
           ["Application reference", applicationReference],
@@ -185,10 +150,9 @@ async function sendComplaintNotifications(data, id) {
     sendMail({
       to: data.email,
       subject: `TPAP submission received - ${reference}`,
-      text: customerText(
-        `Your complaint/suggestion has been received. Reference: ${reference}. TPAP will review it and respond where appropriate.`
-      ),
-      html: customerEmail(
+      text: `Your complaint/suggestion has been received. Reference: ${reference}. TPAP will review it and respond where appropriate.`,
+      html: shell(
+        "Your submission has been received",
         `
           <p>Dear ${data.fullName},</p>
           <p>Thank you for contacting Tax Payer Alliance Pakistan. Your complaint/suggestion has been received and will be reviewed by the relevant team.</p>
@@ -197,47 +161,6 @@ async function sendComplaintNotifications(data, id) {
       )
     })
   ]);
-}
-
-async function sendComplaintStatusNotification(complaint, status, adminNotes) {
-  const reference = `TPAP-CMP-${String(complaint.id).padStart(5, "0")}`;
-  const isInProcess = status === "in_process";
-  const isResolved = status === "resolved";
-  const title = isInProcess
-    ? "Your TPAP complaint is being reviewed"
-    : isResolved
-      ? "Your TPAP complaint has been resolved"
-      : "Your TPAP complaint status has been updated";
-  const summary = isInProcess
-    ? "Your complaint/suggestion is now in process and is being reviewed by the TPAP team."
-    : isResolved
-      ? "Your complaint/suggestion has been marked as resolved by the TPAP team."
-      : "Your complaint/suggestion has been returned to pending review.";
-  const nextStep = isResolved
-    ? "Thank you for helping TPAP identify and advocate on issues affecting Pakistan's taxpayers."
-    : "We will notify you again when there is a further update.";
-
-  return sendMail({
-    to: complaint.email,
-    subject: `${title} - ${reference}`,
-    text: customerText(
-      `${summary} ${nextStep}${adminNotes ? ` Admin note: ${adminNotes}` : ""}`
-    ),
-    html: customerEmail(
-      `
-        <p>Dear ${complaint.full_name || "Taxpayer"},</p>
-        <h2 style="margin: 0 0 14px; font-size: 22px;">${title}</h2>
-        <p>${summary}</p>
-        ${rows([
-          ["Complaint reference", reference],
-          ["Subject", complaint.subject],
-          ["Status", status.replace("_", " ").toUpperCase()],
-          ["Admin note", adminNotes || "-"]
-        ])}
-        <p>${nextStep}</p>
-      `
-    )
-  });
 }
 
 async function sendContactNotifications(data, id) {
@@ -265,10 +188,9 @@ async function sendContactNotifications(data, id) {
     sendMail({
       to: data.email,
       subject: `TPAP inquiry received - ${reference}`,
-      text: customerText(
-        `Your inquiry has been received. Reference: ${reference}. TPAP will review your message and respond where appropriate.`
-      ),
-      html: customerEmail(
+      text: `Your inquiry has been received. Reference: ${reference}. TPAP will review your message and respond where appropriate.`,
+      html: shell(
+        "Your inquiry has been received",
         `
           <p>Dear ${data.name},</p>
           <p>Thank you for contacting Tax Payer Alliance Pakistan. Your inquiry has been received successfully.</p>
@@ -284,6 +206,5 @@ module.exports = {
   sendMembershipNotifications,
   sendMembershipStatusNotification,
   sendComplaintNotifications,
-  sendComplaintStatusNotification,
   sendContactNotifications
 };
